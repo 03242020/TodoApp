@@ -133,6 +133,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         self.present(dialog, animated: true, completion: nil)
                     } else {
                         print("TODO削除成功")
+                        //ここ変更しないで済んだのは何故？
                         self.getTodoDataForFirestore()
                     }
                 }
@@ -170,6 +171,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         // present(modalViewController, animated: true, completion: nil)
     }
     
+    // エラーの内容、インデックスを追加する方法URL
+    // やり方Googleで検索して参考にして対応
+    // TavleViewのリロードされる前の部分なのでFirebaseが怪しい
+    // 
     @IBAction func tapLogoutButton(_ sender: Any) {
         // ①ログイン済みかどうか確認
         if Auth.auth().currentUser != nil {

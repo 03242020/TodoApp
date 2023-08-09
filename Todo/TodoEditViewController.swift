@@ -93,6 +93,10 @@ class TodoEditViewController: UIViewController {
                     self.present(dialog, animated:  true, completion: nil)
                 } else {
                     print("TODO更新成功")
+                    //こちらの追記しか変更していないが、課題のうち2つが完了した可能性。
+                    //原因が理解出来ていないので解析が必要。
+                    let parentVC = self.presentingViewController as! TodoListViewController
+                    parentVC.getTodoDataForFirestore()
                     self.dismiss(animated: true, completion: nil)
                 }
             })
