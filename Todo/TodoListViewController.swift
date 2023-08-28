@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 
+//日付と時間を項目を追加してそれらの選択が
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -24,6 +25,8 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        configureRefreshControl()
+
         // Do any additional setup after loading the view.
     }
     // モーダルから戻ってきた時はviewWillAppear(:)が呼ばれる
@@ -59,12 +62,13 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                     self.todoDetailArray = detailArray
                     self.todoIsDoneArray = isDoneArray
                     self.tableView.reloadData()
-                    
+
                 } else if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 }
             })
         }
+        print("モーダルから戻ったよ")
     }
     
 
@@ -87,6 +91,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         next.todoTitle = todoTitleArray[indexPath.row]
         next.todoDetail = todoDetailArray[indexPath.row]
         next.todoIsDone = todoIsDoneArray[indexPath.row]
+        // delegateを自身に委任
+        next.modalPresentationStyle = .overFullScreen
+        next.presentationController?.delegate = self
+//        self.present(next, animated: true)
         self.present(next, animated: true, completion: nil)
     }
     // スワイプ時のアクションを設定するメソッド
@@ -164,6 +172,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         // ①Todo作成画面に画面遷移
         let storyboard: UIStoryboard = self.storyboard!
         let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController")
+        next.modalPresentationStyle = .fullScreen
         self.present(next, animated:  true, completion: nil)
         // モーダル閉じた際にGETしてRELOADするよう調整したが、別クラスでメソッド呼び出しで解決した。
         // let modalViewController = self.storyboard?.instantiateViewController(withIdentifier: "TodoAddViewController") as! TodoAddViewController
@@ -206,7 +215,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             getTodoDataForFirestore()
             // ないとエラーになるので定義している
         default:
-            isDone = false
+//            isDone = false
             getTodoDataForFirestore()
         }
     }
@@ -266,16 +275,32 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             
         }
     }
+    func configureRefreshControl () {
+        //RefreshControlを追加する処理
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+    @objc func handleRefreshControl() {
+        getTodoDataForFirestore()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.tableView.refreshControl?.endRefreshing()
+            self.view.endEditing(true)
+        }
+    }
 }
 
 // 動作確認できなかった。
 // let parentVC = self.presentingViewController as! TodoListViewController
 // parentVC.getTodoDataForFirestore()
 // 上記で解決
-//extension TodoListViewController: UIAdaptivePresentationControllerDelegate {
-//  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-      // モーダルの dismiss を検知
-      // モーダルが閉じた時に実行したい処理を追加
-//      getTodoDataForFirestore()
-//  }
-//}
+extension TodoListViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        print("VC didDismiss")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            print("5秒経ちました。")
+            self.getTodoDataForFirestore()
+        }
+        
+    }
+}

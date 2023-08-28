@@ -23,6 +23,12 @@ class TodoEditViewController: UIViewController {
     var todoDetail: String!
     var todoIsDone: Bool!
     
+    // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
+    var todoIdArray: [String] = []
+    var todoTitleArray: [String] = []
+    var todoDetailArray: [String] = []
+    var todoIsDoneArray: [Bool] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // ②初期値をセット
@@ -30,12 +36,14 @@ class TodoEditViewController: UIViewController {
         detailTextView.text = todoDetail
         
         switch todoIsDone {
+        case true:
+            isDoneLabel.text = "完了"
+            doneButton.setTitle("未完了にする", for: .normal)
         case false:
             isDoneLabel.text = "未完了"
             doneButton.setTitle("完了済みにする", for: .normal)
         default:
-            isDoneLabel.text = "完了"
-            doneButton.setTitle("未完了にする", for: .normal)
+            print("エラー")
         }
         // Do any additional setup after loading the view.
     }
@@ -93,13 +101,12 @@ class TodoEditViewController: UIViewController {
                     self.present(dialog, animated:  true, completion: nil)
                 } else {
                     print("TODO更新成功")
-                    //こちらの追記しか変更していないが、課題のうち2つが完了した可能性。
-                    //原因が理解出来ていないので解析が必要。
-                    let parentVC = self.presentingViewController as! TodoListViewController
-                    parentVC.getTodoDataForFirestore()
-                    self.dismiss(animated: true, completion: nil)
                 }
             })
+        }
+        if let presentationController = presentationController {
+            presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
