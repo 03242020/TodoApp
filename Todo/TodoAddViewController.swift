@@ -51,7 +51,8 @@ class TodoAddViewController: UIViewController {
                             print("TODO作成成功")
                             // ④Todo一覧画面に戻る
                             let parentVC = self.presentingViewController as! TodoListViewController
-                            parentVC.getTodoDataForFirestore()
+                            //猪股
+//                            parentVC.getTodoDataForFirestore1()
                             self.dismiss(animated: true, completion: nil)
 //                            guard let parent = self.storyboard?.instantiateViewController(withIdentifier: "TodoListViewController") as? TodoListViewController else {
 //                                fatalError()
