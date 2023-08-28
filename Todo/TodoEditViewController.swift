@@ -92,6 +92,10 @@ class TodoEditViewController: UIViewController {
     }
     
     @IBAction func tapCloseButton(_ sender: Any) {
+        if let presentationController = presentationController {
+            presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+            self.dismiss(animated: true, completion: nil)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     // ③完了、未完了切り替えボタンの実装
@@ -104,7 +108,20 @@ class TodoEditViewController: UIViewController {
                         "isDone": false,
                         "updatedAt": FieldValue.serverTimestamp()
                     ]
-                    , completion: {_ in
+                    , completion: {error in
+                        if let error = error {
+                            print("TODO更新失敗: " + error.localizedDescription)
+                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
+                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                            self.present(dialog, animated:  true, completion: nil)
+                        } else {
+                            print("TODO更新成功")
+//                            if let presentationController = self.presentationController {
+//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+                                self.delegate?.delegateBool(keyWord: true)
+//                                self.dismiss(animated: true, completion: nil)
+//                            }
+                        }
                     })
             }
         }
@@ -116,10 +133,27 @@ class TodoEditViewController: UIViewController {
                         "isDone": true,
                         "updatedAt": FieldValue.serverTimestamp()
                     ]
-                    , completion: {_ in
+                    , completion: {error in
+                        if let error = error {
+                            print("TODO更新失敗: " + error.localizedDescription)
+                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
+                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                            self.present(dialog, animated:  true, completion: nil)
+                        } else {
+                            print("TODO更新成功")
+                            if let presentationController = self.presentationController {
+//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+                                self.delegate?.delegateBool(keyWord: false)
+//                                self.dismiss(animated: true, completion: nil)
+                            }
+                        }
                     })
             }
         }
+//        if let presentationController = presentationController {
+//            presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+//            self.dismiss(animated: true, completion: nil)
+//        }
     }
     
 //        if todoIsDone == true {
