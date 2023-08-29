@@ -5,6 +5,10 @@
 //  Created by ryo.inomata on 2023/07/13.
 //
 
+// SplashViewControllerが使えてないので、最初のログイン確認処理の為に使うようにする。
+// エディタ画面のタイトルの下に何月何日何時を表示する。
+// ライフサイクルの理解が出来ていない為調べる。モーダルとライフサイクルの関係について調べる。
+
 import UIKit
 import Firebase
 
@@ -19,9 +23,6 @@ class TodoEditViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet weak var isDoneLabel: UILabel!
-    
-
-    weak var delegate: KeyWordInputDelegate?
     //① 一覧画面から受け取るように変数を用意
     var todoId: String!
     var todoTitle: String!
@@ -81,9 +82,6 @@ class TodoEditViewController: UIViewController {
                         self.present(dialog, animated: true, completion: nil)
                     } else {
                         print("TODO更新成功")
-                        let parentVC = self.presentingViewController as! TodoListViewController
-                        //猪股
-//                        parentVC.getTodoDataForFirestore1()
                         self.dismiss(animated: true, completion: nil)
                     }
                 })
@@ -92,132 +90,30 @@ class TodoEditViewController: UIViewController {
     }
     
     @IBAction func tapCloseButton(_ sender: Any) {
-        if let presentationController = presentationController {
-            presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-            self.dismiss(animated: true, completion: nil)
-        }
         self.dismiss(animated: true, completion: nil)
     }
+    
     // ③完了、未完了切り替えボタンの実装
     @IBAction func tapDoneButton(_ sender: Any) {
-        if todoIsDone == true {
-            if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
-                    [
-                        //"isDone": !todoIsDone,
-                        "isDone": false,
-                        "updatedAt": FieldValue.serverTimestamp()
-                    ]
-                    , completion: {error in
-                        if let error = error {
-                            print("TODO更新失敗: " + error.localizedDescription)
-                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
-                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
-                            self.present(dialog, animated:  true, completion: nil)
-                        } else {
-                            print("TODO更新成功")
-//                            if let presentationController = self.presentationController {
-//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-                                self.delegate?.delegateBool(keyWord: true)
-//                                self.dismiss(animated: true, completion: nil)
-//                            }
-                        }
-                    })
-            }
+        if let user = Auth.auth().currentUser {
+            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
+                [
+                    "isDone": !todoIsDone,
+                    "updatedAt": FieldValue.serverTimestamp()
+                ]
+                , completion: {error in
+                    if let error = error {
+                        print("TODO更新失敗: " + error.localizedDescription)
+                        let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
+                        dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(dialog, animated:  true, completion: nil)
+                    } else {
+                        print("TODO更新成功")
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                })
         }
-        if todoIsDone == false {
-            if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
-                    [
-                        //"isDone": !todoIsDone,
-                        "isDone": true,
-                        "updatedAt": FieldValue.serverTimestamp()
-                    ]
-                    , completion: {error in
-                        if let error = error {
-                            print("TODO更新失敗: " + error.localizedDescription)
-                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
-                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
-                            self.present(dialog, animated:  true, completion: nil)
-                        } else {
-                            print("TODO更新成功")
-                            if let presentationController = self.presentationController {
-//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-                                self.delegate?.delegateBool(keyWord: false)
-//                                self.dismiss(animated: true, completion: nil)
-                            }
-                        }
-                    })
-            }
-        }
-//        if let presentationController = presentationController {
-//            presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-//            self.dismiss(animated: true, completion: nil)
-//        }
     }
-    
-//        if todoIsDone == true {
-//            if let user = Auth.auth().currentUser {
-//                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
-//                    [
-//                        //"isDone": !todoIsDone,
-//                        "isDone": false,
-//                        "updatedAt": FieldValue.serverTimestamp()
-//                    ]
-//                    , completion: {_ in
-//                    }
-//                        error in
-//                        if let error = error {
-//                            print("TODO更新失敗: " + error.localizedDescription)
-//                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
-//                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
-//                            self.present(dialog, animated:  true, completion: nil)
-//                        } else {
-//                            print("TODO更新成功")
-//                            if let presentationController = self.presentationController {
-//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-//                                self.delegate?.delegateBool(keyWord: true)
-//                                self.dismiss(animated: true, completion: nil)
-//                            }
-//                        }
-//                    })
-//            }
-//            if let presentationController = presentationController {
-//                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-//                self.dismiss(animated: true, completion: nil)
-//            }
-//        } else if todoIsDone == false {
-//            if let user = Auth.auth().currentUser {
-//                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
-//                    [
-//                        //"isDone": !todoIsDone,
-//                        "isDone": true,
-//                        "updatedAt": FieldValue.serverTimestamp()
-//                    ]
-//                    , completion: {
-//                    }
-//                        error in
-//                        if let error = error {
-//                            print("TODO更新失敗: " + error.localizedDescription)
-//                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
-//                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
-//                            self.present(dialog, animated:  true, completion: nil)
-//                        } else {
-//                            print("TODO更新成功")
-//                            if let presentationController = self.presentationController {
-//                                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-//                                self.delegate?.delegateBool(keyWord: false)
-//                                self.dismiss(animated: true, completion: nil)
-//                            }
-//                        }
-//                    })
-//            }
-//            if let presentationController = presentationController {
-//                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
-//                self.dismiss(animated: true, completion: nil)
-//            }
-//        }
-//    }
     
     @IBAction func tapDeleteButton(_ sender: Any) {
         if let user = Auth.auth().currentUser {
@@ -229,9 +125,6 @@ class TodoEditViewController: UIViewController {
                     self.present(dialog, animated: true, completion: nil)
                 } else {
                     print("TODO削除成功")
-                    let parentVC = self.presentingViewController as! TodoListViewController
-                    //猪股
-//                    parentVC.getTodoDataForFirestore1()
                     self.dismiss(animated: true, completion: nil)
                 }
             }

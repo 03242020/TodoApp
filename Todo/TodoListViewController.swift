@@ -13,15 +13,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
     
-    private var sendKeyWord: Bool?
-    //    {
-    //        didSet {
-    //            isDone = sendKeyWord
-    //            getTodoDataForFirestore()
-    //            print("着地")
-    //        }
-    //    }
-    
     // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
     var todoIdArray: [String] = []
     var todoTitleArray: [String] = []
@@ -40,6 +31,8 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     //     モーダルから戻ってきた時はviewWillAppear(:)が呼ばれる
     override func viewWillAppear(_ animated: Bool) {
+        
+        
         super.viewWillAppear(animated)
         // ①ログイン済みかどうか確認
         if let user = Auth.auth().currentUser {
@@ -53,32 +46,13 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                     print("ユーザー名取得失敗: " + error.localizedDescription)
                 }
             })
-            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in
-                if let querySnapshot = querySnapshot {
-                    var idArray:[String] = []
-                    var titleArray:[String] = []
-                    var detailArray:[String] = []
-                    var isDoneArray:[Bool] = []
-                    for doc in querySnapshot.documents {
-                        let data = doc.data()
-                        idArray.append(doc.documentID)
-                        titleArray.append(data["title"] as! String)
-                        detailArray.append(data["detail"] as! String)
-                        isDoneArray.append(data["isDone"] as! Bool)
-                    }
-                    self.todoIdArray = idArray
-                    self.todoTitleArray = titleArray
-                    self.todoDetailArray = detailArray
-                    self.todoIsDoneArray = isDoneArray
-                    self.tableView.reloadData()
-                } else if let error = error {
-                    print("TODO取得失敗: " + error.localizedDescription)
-                }
-            })
+            getTodoDataForFirestore()
         }
     }
-    
-    
+            /*Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in*/
+                // ↑不具合の原因となったAPI記述
+                // ↓全さんに修正して頂いたAPI記述
+                /*Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion:{ (querySnapshot, error) in*/
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todoTitleArray.count
@@ -98,11 +72,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         next.todoTitle = todoTitleArray[indexPath.row]
         next.todoDetail = todoDetailArray[indexPath.row]
         next.todoIsDone = todoIsDoneArray[indexPath.row]
-        // delegateを自身に委任
-        next.modalPresentationStyle = .overFullScreen
-        next.presentationController?.delegate = self
-        next.delegate = self
-        //        self.present(next, animated: true)
+        next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
     // スワイプ時のアクションを設定するメソッド
@@ -124,8 +94,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             self.present(dialog, animated: true, completion: nil)
                         } else {
                             print("TODO更新成功")
-                            //猪股
-                            //                        self.getTodoDataForFirestore1()
                         }
                     })
             }
@@ -150,9 +118,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         self.present(dialog, animated: true, completion: nil)
                     } else {
                         print("TODO削除成功")
-                        //ここ変更しないで済んだのは何故？
-                        //猪股
-                        //                        self.getTodoDataForFirestore1()
                     }
                 }
             }
@@ -184,15 +149,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController")
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated:  true, completion: nil)
-        // モーダル閉じた際にGETしてRELOADするよう調整したが、別クラスでメソッド呼び出しで解決した。
-        // let modalViewController = self.storyboard?.instantiateViewController(withIdentifier: "TodoAddViewController") as! TodoAddViewController
-        // modalViewController.presentationController?.delegate = self
-        // present(modalViewController, animated: true, completion: nil)
     }
-    
-    // エラーの内容、インデックスを追加する方法URL
-    // やり方Googleで検索して参考にして対応
-    // TavleViewのリロードされる前の部分なのでFirebaseが怪しい
     //
     @IBAction func tapLogoutButton(_ sender: Any) {
         // ①ログイン済みかどうか確認
@@ -219,72 +176,20 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         switch sender.selectedSegmentIndex {
         case 0:
             isDone = false
-            if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in
-                    if let querySnapshot = querySnapshot {
-                        var idArray:[String] = []
-                        var titleArray:[String] = []
-                        var detailArray:[String] = []
-                        var isDoneArray:[Bool] = []
-                        for doc in querySnapshot.documents {
-                            let data = doc.data()
-                            idArray.append(doc.documentID)
-                            titleArray.append(data["title"] as! String)
-                            detailArray.append(data["detail"] as! String)
-                            isDoneArray.append(data["isDone"] as! Bool)
-                        }
-                        self.todoIdArray = idArray
-                        self.todoTitleArray = titleArray
-                        self.todoDetailArray = detailArray
-                        self.todoIsDoneArray = isDoneArray
-                        self.tableView.reloadData()
-                        
-                    } else if let error = error {
-                        print("TODO取得失敗: " + error.localizedDescription)
-                    }
-                })
-            }
+            getTodoDataForFirestore()
         case 1:
-            //            if isDone == nil {
             isDone = true
-            //            }
-            if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in
-                    if let querySnapshot = querySnapshot {
-                        var idArray:[String] = []
-                        var titleArray:[String] = []
-                        var detailArray:[String] = []
-                        var isDoneArray:[Bool] = []
-                        for doc in querySnapshot.documents {
-                            let data = doc.data()
-                            idArray.append(doc.documentID)
-                            titleArray.append(data["title"] as! String)
-                            detailArray.append(data["detail"] as! String)
-                            isDoneArray.append(data["isDone"] as! Bool)
-                        }
-                        self.todoIdArray = idArray
-                        self.todoTitleArray = titleArray
-                        self.todoDetailArray = detailArray
-                        self.todoIsDoneArray = isDoneArray
-                        self.tableView.reloadData()
-                        
-                    } else if let error = error {
-                        print("TODO取得失敗: " + error.localizedDescription)
-                    }
-                })
-            }
+            getTodoDataForFirestore()
             // ないとエラーになるので定義している
         default:
-            //            isDone = false
-            //            getTodoDataForFirestore()
-            print("test")
+            break
         }
     }
     
     // FirestoreからTodoを取得する処理
-    func getTodoDataForFirestore1() {
+    func getTodoDataForFirestore() {
         if let user = Auth.auth().currentUser {
-            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in
+            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
                 if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 } else {
@@ -310,33 +215,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             })
         }
     }
-    //なぜ下記記述では上手く動作しないのか
-    //        if let user = Auth.auth().currentUser {
-    //            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (QuerySnapshot, error) in
-    //                if let QuerySnapshot = QuerySnapshot {
-    //                    var idArray:[String] = []
-    //                    var titleArray:[String] = []
-    //                    var detailArray:[String] = []
-    //                    var isDoneArray:[Bool] = []
-    //                    for doc in QuerySnapshot.documents {
-    //                        let data = doc.data()
-    //                        idArray.append(doc.documentID)
-    //                        titleArray.append(data["title"] as! String)
-    //                        detailArray.append(data["detail"] as! String)
-    //                        isDoneArray.append(data["isDone"] as! Bool)
-    //                    }
-    //                    self.todoIdArray = idArray
-    //                    self.todoTitleArray = titleArray
-    //                    self.todoDetailArray = detailArray
-    //                    self.todoIsDoneArray = isDoneArray
-    //                    print(self.todoTitleArray)
-    //                    self.tableView.reloadData()
-    //
-    //                } else if let error = error {
-    //                    print("TODO取得失敗: " + error.localizedDescription)
-    //                }
-    //            })
-    
     
     func configureRefreshControl () {
         //RefreshControlを追加する処理
@@ -344,41 +222,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     @objc func handleRefreshControl() {
-        getTodoDataForFirestore1()
+        getTodoDataForFirestore()
         DispatchQueue.main.async {
-            //            self.tableView.reloadData()
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
         }
-    }
-}
-
-// 動作確認できなかった。
-// let parentVC = self.presentingViewController as! TodoListViewController
-// parentVC.getTodoDataForFirestore()
-// 上記で解決
-extension TodoListViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        print("VC didDismiss")
-        if sendKeyWord == false {
-            isDone = false
-            getTodoDataForFirestore1()
-        }
-        if sendKeyWord == true {
-            isDone = true
-            getTodoDataForFirestore1()
-        }
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-//            print("0.15秒経ちました。")
-//            self.getTodoDataForFirestore()
-//        }
-        
-    }
-}
-
-extension TodoListViewController: KeyWordInputDelegate {
-    func delegateBool(keyWord: Bool) {
-        self.sendKeyWord = keyWord
     }
 }
