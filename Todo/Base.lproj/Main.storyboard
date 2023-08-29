@@ -513,6 +513,15 @@
                                     <action selector="tapDeleteButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="rbf-L6-yTr"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ts-Ur-0rf">
+                                <rect key="frame" x="302" y="76" width="76" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="閉じる"/>
+                                <connections>
+                                    <action selector="tapCloseButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="9p1-78-P37"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8tY-lO-cZT"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
