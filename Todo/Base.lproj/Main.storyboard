@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yXB-F1-gU2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ykQ-pd-Dfq">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
@@ -663,9 +663,41 @@
             </objects>
             <point key="canvasLocation" x="3111" y="-1349"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="ggz-77-auJ">
+            <objects>
+                <viewController id="ykQ-pd-Dfq" customClass="SplashViewController" customModule="Todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ih3-37-icf">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hiyoko" translatesAutoresizingMaskIntoConstraints="NO" id="xD5-aa-7bD">
+                                <rect key="frame" x="147" y="376.66666666666669" width="99" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="xD5-aa-7bD" secondAttribute="height" multiplier="1:1" id="glq-u2-5NI"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="qlH-rr-iXw"/>
+                        <color key="backgroundColor" red="0.0" green="0.67450980390000004" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="qlH-rr-iXw" firstAttribute="trailing" secondItem="xD5-aa-7bD" secondAttribute="trailing" constant="147" id="gd2-jF-WbS"/>
+                            <constraint firstItem="xD5-aa-7bD" firstAttribute="leading" secondItem="qlH-rr-iXw" secondAttribute="leading" constant="147" id="uGO-pF-KUt"/>
+                            <constraint firstItem="xD5-aa-7bD" firstAttribute="centerY" secondItem="ih3-37-icf" secondAttribute="centerY" id="y4d-mK-cx9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="ih3-37-icf" id="vHQ-ff-ruj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2vQ-ua-wIg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="80" y="5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="book" catalog="system" width="128" height="99"/>
+        <image name="hiyoko" width="232" height="256"/>
         <image name="person.2" catalog="system" width="128" height="82"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>

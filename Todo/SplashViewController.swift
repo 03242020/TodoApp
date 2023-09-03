@@ -10,7 +10,11 @@ import Firebase
 
 class SplashViewController: UIViewController {
     
-    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet var imageView: UIView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
