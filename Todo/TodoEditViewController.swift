@@ -19,6 +19,7 @@ protocol KeyWordInputDelegate: AnyObject {
 class TodoEditViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var createdTextField: UITextField!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var doneButton: UIButton!
     
@@ -26,12 +27,14 @@ class TodoEditViewController: UIViewController {
     //① 一覧画面から受け取るように変数を用意
     var todoId: String!
     var todoTitle: String!
+    var todoCreated: String!
     var todoDetail: String!
     var todoIsDone: Bool!
     
     // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
     var todoIdArray: [String] = []
     var todoTitleArray: [String] = []
+    var todoCreatedArray: [String] = []
     var todoDetailArray: [String] = []
     var todoIsDoneArray: [Bool] = []
     
@@ -39,6 +42,7 @@ class TodoEditViewController: UIViewController {
         super.viewDidLoad()
         // ②初期値をセット
         titleTextField.text = todoTitle
+        createdTextField.text = todoCreated
         detailTextView.text = todoDetail
         
         switch todoIsDone {

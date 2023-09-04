@@ -18,6 +18,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     var todoTitleArray: [String] = []
     var todoDetailArray: [String] = []
     var todoIsDoneArray: [Bool] = []
+    var todoCreatedArray: [String] = []
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
     var isDone: Bool? = false
     
@@ -72,6 +73,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         next.todoTitle = todoTitleArray[indexPath.row]
         next.todoDetail = todoDetailArray[indexPath.row]
         next.todoIsDone = todoIsDoneArray[indexPath.row]
+        next.todoCreated = todoCreatedArray[indexPath.row]
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -198,17 +200,26 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         var titleArray:[String] = []
                         var detailArray:[String] = []
                         var isDoneArray:[Bool] = []
+                        var createdArray:[Timestamp] = []
                         for doc in querySnapshot.documents {
                             let data = doc.data()
                             idArray.append(doc.documentID)
                             titleArray.append(data["title"] as! String)
                             detailArray.append(data["detail"] as! String)
                             isDoneArray.append(data["isDone"] as! Bool)
+                            createdArray.append(data["createdAt"] as! Timestamp)
                         }
                         self.todoIdArray = idArray
                         self.todoTitleArray = titleArray
                         self.todoDetailArray = detailArray
                         self.todoIsDoneArray = isDoneArray
+                        var todoCreatedArrayDate: [Date] = []
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        for i in 0 ..< createdArray.count{
+                            todoCreatedArrayDate.append(createdArray[i].dateValue())
+                            self.todoCreatedArray.append(dateFormatter.string(from: todoCreatedArrayDate[i]))
+                        }
                         self.tableView.reloadData()
                     }
                 }
