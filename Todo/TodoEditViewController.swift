@@ -19,7 +19,7 @@ protocol KeyWordInputDelegate: AnyObject {
 class TodoEditViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var createdTextField: UITextField!
+    @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var doneButton: UIButton!
     
@@ -42,7 +42,7 @@ class TodoEditViewController: UIViewController {
         super.viewDidLoad()
         // ②初期値をセット
         titleTextField.text = todoTitle
-        createdTextField.text = todoCreated
+        createdLabel.text = todoCreated
         detailTextView.text = todoDetail
         
         switch todoIsDone {
