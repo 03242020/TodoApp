@@ -15,8 +15,8 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var dateTextField: UITextField!
     
     var datePicker: UIDatePicker = UIDatePicker()
-    let DATE_FORMATTER = DateFormatter()
-    var DATE = ""
+    let dateFormatter = DateFormatter()
+    var date = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,7 @@ class TodoAddViewController: UIViewController {
                      "isDone": false,
                      "createdAt": createdTime,
                      "updatedAt": createdTime,
-                     "scheduleDate": self.DATE
+                     "scheduleDate": self.date
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -83,14 +83,14 @@ class TodoAddViewController: UIViewController {
      */
     @objc func done() {
         dateTextField.endEditing(true)
-        DATE = DATE_FORMATTER.string(from: datePicker.date)
-        dateTextField.text = DATE
+        date = dateFormatter.string(from: datePicker.date)
+        dateTextField.text = date
     }
     func pickerView() {
-        DATE_FORMATTER.locale = Locale(identifier: "ja_JP")
-        DATE_FORMATTER.dateFormat = "yyyy/MM/dd HH:mm"
-        DATE = DATE_FORMATTER.string(from: Date())
-        dateTextField.text = DATE
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+        date = dateFormatter.string(from: Date())
+        dateTextField.text = date
         datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels

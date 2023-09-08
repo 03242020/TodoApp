@@ -12,12 +12,9 @@
 import UIKit
 import Firebase
 
-protocol KeyWordInputDelegate: AnyObject {
-    func delegateBool(keyWord: Bool)
-}
 var datePicker: UIDatePicker = UIDatePicker()
-let DATE_FORMATTER = DateFormatter()
-var DATE = ""
+let dateFormatter = DateFormatter()
+var date = ""
 
 class TodoEditViewController: UIViewController {
     
@@ -83,7 +80,7 @@ class TodoEditViewController: UIViewController {
                     "title": title,
                     "detail": detail,
                     "updatedAt": FieldValue.serverTimestamp(),
-                    "scheduleDate": DATE
+                    "scheduleDate": date
                 ]
                 , completion: { error in
                     if let error = error {
@@ -152,13 +149,13 @@ class TodoEditViewController: UIViewController {
     */
     @objc func done() {
         dateTextField.endEditing(true)
-        DATE = DATE_FORMATTER.string(from: datePicker.date)
-        dateTextField.text = DATE
+        date = dateFormatter.string(from: datePicker.date)
+        dateTextField.text = date
     }
     func pickerView() {
-        DATE_FORMATTER.locale = Locale(identifier: "ja_JP")
-        DATE_FORMATTER.dateFormat = "yyyy/MM/dd HH:mm"
-        dateTextField.text = DATE
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+        dateTextField.text = date
         datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels
