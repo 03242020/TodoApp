@@ -214,7 +214,30 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             if let fireBaseScheduleDate = data["scheduleDate"] {
                                 scheduleDateArray.append(data["scheduleDate"] as! String)
                             } else {
-                                scheduleDateArray.append("yyyy/mm/dd hh:mm")
+                                Firestore.firestore().collection("users/\(user.uid)/todos").document(doc.documentID).updateData(
+                                    [
+                                        "scheduleDate": "yyyy/mm/dd hh:mm"
+                                    ]
+                                    , completion: { error in
+                                        if let error = error {
+                                            print("TODO更新失敗: " + error.localizedDescription)
+                                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
+                                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                                            self.present(dialog, animated: true, completion: nil)
+                                        } else {
+                                            print("TODO更新成功")
+                                            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: self.isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
+                                                if let error = error {
+                                                    print("TODO取得失敗: " + error.localizedDescription)
+                                                } else {
+                                                    if let querySnapshot = querySnapshot {
+                                                        let data = doc.data()
+                                                        scheduleDateArray.append(data["scheduleDate"] as! String)
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    })
                             }
                         }
                         self.todoIdArray = idArray
