@@ -211,7 +211,11 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             detailArray.append(data["detail"] as! String)
                             isDoneArray.append(data["isDone"] as! Bool)
                             createdArray.append(data["createdAt"] as! Timestamp)
-                            scheduleDateArray.append(data["scheduleDate"] as! String)
+                            if let fireBaseScheduleDate = data["scheduleDate"] {
+                                scheduleDateArray.append(data["scheduleDate"] as! String)
+                            } else {
+                                scheduleDateArray.append("yyyy/mm/dd hh:mm")
+                            }
                         }
                         self.todoIdArray = idArray
                         self.todoTitleArray = titleArray
