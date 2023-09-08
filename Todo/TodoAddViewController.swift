@@ -12,11 +12,21 @@ class TodoAddViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextView: UITextView!
+    @IBOutlet weak var dateTextField: UITextField!
+    
+    var datePicker: UIDatePicker = UIDatePicker()
+    let DATE_FORMATTER = DateFormatter()
+    var DATE = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        pickerView()
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     override func viewDidLayoutSubviews() {
         detailTextView.layer.borderWidth = 1.0
@@ -38,7 +48,8 @@ class TodoAddViewController: UIViewController {
                      "detail": detail,
                      "isDone": false,
                      "createdAt": createdTime,
-                     "updatedAt": createdTime
+                     "updatedAt": createdTime,
+                     "scheduleDate": self.DATE
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -50,20 +61,17 @@ class TodoAddViewController: UIViewController {
                         } else {
                             print("TODO作成成功")
                             // ④Todo一覧画面に戻る
-                            let parentVC = self.presentingViewController as! TodoListViewController
-                            //猪股
-//                            parentVC.getTodoDataForFirestore1()
                             self.dismiss(animated: true, completion: nil)
-//                            guard let parent = self.storyboard?.instantiateViewController(withIdentifier: "TodoListViewController") as? TodoListViewController else {
-//                                fatalError()
-//                            }
-                            
-//                            parent.getTodoDataForFirestore()
                         }
                 })
             }
         }
     }
+
+    @IBAction func closeButton(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     /*
      // MARK: - Navigation
      
@@ -73,5 +81,27 @@ class TodoAddViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
+    @objc func done() {
+        dateTextField.endEditing(true)
+        DATE = DATE_FORMATTER.string(from: datePicker.date)
+        dateTextField.text = DATE
+    }
+    func pickerView() {
+        DATE_FORMATTER.locale = Locale(identifier: "ja_JP")
+        DATE_FORMATTER.dateFormat = "yyyy/MM/dd HH:mm"
+        DATE = DATE_FORMATTER.string(from: Date())
+        dateTextField.text = DATE
+        datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+        datePicker.timeZone = NSTimeZone.local
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.locale = Locale(identifier: "ja_JP")
+        dateTextField.inputView = datePicker
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
+        let spacelItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        toolbar.setItems([spacelItem, doneItem], animated: true)
+        // インプットビュー設定(紐づいているUITextfieldへ代入)
+        dateTextField.inputView = datePicker
+        dateTextField.inputAccessoryView = toolbar
+    }
 }
