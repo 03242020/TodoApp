@@ -230,10 +230,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                                                 if let error = error {
                                                     print("TODO取得失敗: " + error.localizedDescription)
                                                 } else {
-                                                    if let querySnapshot = querySnapshot {
-                                                        let data = doc.data()
-                                                        scheduleDateArray.append(data["scheduleDate"] as! String)
-                                                    }
+                                                    self.getTodoDataForFirestore()
                                                 }
                                             })
                                         }
