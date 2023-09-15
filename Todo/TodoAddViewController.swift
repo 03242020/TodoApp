@@ -13,16 +13,21 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var dateTextField: UITextField!
+    @IBOutlet weak var timeTextField: UITextField!
     
     var datePicker: UIDatePicker = UIDatePicker()
+    var timePicker: UIDatePicker = UIDatePicker()
     let dateFormatter = DateFormatter()
+    let timeFormatter = DateFormatter()
     var date = ""
+    var time = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        pickerView()
+        datePickerView()
+        timePickerView()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -34,7 +39,7 @@ class TodoAddViewController: UIViewController {
         detailTextView.layer.cornerRadius = 5.0
         detailTextView.layer.masksToBounds = true
     }
-    
+    //ピッカービュー表示時に、年の部分も
     @IBAction func tapAddButton(_ sender: Any) {
         if let title = titleTextField.text,
             let detail = detailTextView.text {
@@ -49,7 +54,8 @@ class TodoAddViewController: UIViewController {
                      "isDone": false,
                      "createdAt": createdTime,
                      "updatedAt": createdTime,
-                     "scheduleDate": self.date
+                     "scheduleDate": self.date,
+                     "scheduleTime": self.time
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -81,27 +87,52 @@ class TodoAddViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    @objc func done() {
+    @objc func dateDone() {
         dateTextField.endEditing(true)
         date = dateFormatter.string(from: datePicker.date)
         dateTextField.text = date
     }
-    func pickerView() {
+    @objc func timeDone() {
+        timeTextField.endEditing(true)
+        time = timeFormatter.string(from: timePicker.date)
+        timeTextField.text = time
+    }
+    func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
-        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+        //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+        dateFormatter.dateFormat = "yyyy/MM/dd"
         date = dateFormatter.string(from: Date())
         dateTextField.text = date
-        datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+        //datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+        datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "ja_JP")
         dateTextField.inputView = datePicker
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
         let spacelItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dateDone))
         toolbar.setItems([spacelItem, doneItem], animated: true)
         // インプットビュー設定(紐づいているUITextfieldへ代入)
         dateTextField.inputView = datePicker
         dateTextField.inputAccessoryView = toolbar
+    }
+    func timePickerView() {
+        timeFormatter.locale = Locale(identifier: "ja_JP")
+        timeFormatter.dateFormat = "HH:mm"
+        time = timeFormatter.string(from: Date())
+        timeTextField.text = time
+        timePicker.datePickerMode = UIDatePicker.Mode.time
+        timePicker.timeZone = NSTimeZone.local
+        timePicker.preferredDatePickerStyle = .wheels
+        timePicker.locale = Locale(identifier: "ja_JP")
+        timeTextField.inputView = timePicker
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
+        let spacelItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(timeDone))
+        toolbar.setItems([spacelItem, doneItem], animated: true)
+        // インプットビュー設定(紐づいているUITextfieldへ代入)
+        timeTextField.inputView = timePicker
+        timeTextField.inputAccessoryView = toolbar
     }
 }

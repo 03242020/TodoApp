@@ -8,6 +8,16 @@
 import UIKit
 import Firebase
 
+//やること
+//年の追加(ピッカビューの月と日の左側)
+//カテゴリは最後にする
+//updatedAtの下にカテゴリを4つほど追加する
+//Todoカテゴリ分けてTodoを保存
+//カテゴリでfirebase内でグループ化して、getする時にカテゴリも取得して、表示する。
+//とりあえずカテゴリ1つ置いてプッシュして認識合わせ
+//updatedAtが作成日日時になってしまっているので更新日にしっかり直す
+//更新日は下に改める。
+
 //日付と時間を項目を追加してそれらの選択が
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
@@ -19,7 +29,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     var todoDetailArray: [String] = []
     var todoIsDoneArray: [Bool] = []
     var todoCreatedArray: [String] = []
+    var todoUpdatedArray: [String] = []
     var todoScheduleDateArray: [String] = []
+    var todoScheduleTimeArray: [String] = []
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
     var isDone: Bool? = false
     
@@ -33,7 +45,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     //     モーダルから戻ってきた時はviewWillAppear(:)が呼ばれる
     override func viewWillAppear(_ animated: Bool) {
-        
+        todoUpdatedArray = []
         
         super.viewWillAppear(animated)
         // ①ログイン済みかどうか確認
@@ -75,7 +87,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         next.todoDetail = todoDetailArray[indexPath.row]
         next.todoIsDone = todoIsDoneArray[indexPath.row]
         next.todoCreated = todoCreatedArray[indexPath.row]
+        next.todoUpdated = todoUpdatedArray[indexPath.row]
         next.todoScheduleDate = todoScheduleDateArray[indexPath.row]
+        next.todoScheduleTime = todoScheduleTimeArray[indexPath.row]
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -203,7 +217,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         var detailArray:[String] = []
                         var isDoneArray:[Bool] = []
                         var createdArray:[Timestamp] = []
+                        var updatedArray:[Timestamp] = []
                         var scheduleDateArray:[String] = []
+                        var scheduleTimeArray:[String] = []
                         for doc in querySnapshot.documents {
                             let data = doc.data()
                             idArray.append(doc.documentID)
@@ -211,43 +227,43 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             detailArray.append(data["detail"] as! String)
                             isDoneArray.append(data["isDone"] as! Bool)
                             createdArray.append(data["createdAt"] as! Timestamp)
-                            if let fireBaseScheduleDate = data["scheduleDate"] {
-                                scheduleDateArray.append(data["scheduleDate"] as! String)
+                            updatedArray.append(data["updatedAt"] as! Timestamp)
+                            if let temp = data["scheduleDate"] as? String {
+                                scheduleDateArray.append(temp)
                             } else {
-                                Firestore.firestore().collection("users/\(user.uid)/todos").document(doc.documentID).updateData(
-                                    [
-                                        "scheduleDate": "yyyy/mm/dd hh:mm"
-                                    ]
-                                    , completion: { error in
-                                        if let error = error {
-                                            print("TODO更新失敗: " + error.localizedDescription)
-                                            let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
-                                            dialog.addAction(UIAlertAction(title: "OK", style: .default))
-                                            self.present(dialog, animated: true, completion: nil)
-                                        } else {
-                                            print("TODO更新成功")
-                                            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: self.isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
-                                                if let error = error {
-                                                    print("TODO取得失敗: " + error.localizedDescription)
-                                                } else {
-                                                    self.getTodoDataForFirestore()
-                                                }
-                                            })
-                                        }
-                                    })
+                                scheduleDateArray.append("yyyy/mm/dd")
                             }
+                            if let temp = data["scheduleTime"] as? String {
+                                scheduleTimeArray.append(temp)
+                            } else {
+                                scheduleTimeArray.append("hh:mm")
+                            }
+                            // scheduleDateArray = []
+                            // オプショナル型にして、String以外の場合は、固定値を入れる記述。
+                            // 強制アンラップは極力やめる
+                            // 必須の要素はas!強制をする。あるかないか、scheduleDateArray等
+                            // はオプショナル型の使用を推奨
+                            // クラッシュの原因は大きい割合で、強制アンラップがありうるので気を付ける。
+                            // Swift入門53Pあたりのオプショナルを読み直す
+                            //scheduleDateArray?.append(data["scheduleDate"] as? String ?? "yyyy/mm/dd hh:mm")
                         }
                         self.todoIdArray = idArray
                         self.todoTitleArray = titleArray
                         self.todoDetailArray = detailArray
                         self.todoIsDoneArray = isDoneArray
                         self.todoScheduleDateArray = scheduleDateArray
-                        var todoCreatedArrayDate: [Date] = []
+                        self.todoScheduleTimeArray = scheduleTimeArray
+                        var todoCreatedArray_: [Date] = []
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         for i in 0 ..< createdArray.count{
-                            todoCreatedArrayDate.append(createdArray[i].dateValue())
-                            self.todoCreatedArray.append(dateFormatter.string(from: todoCreatedArrayDate[i]))
+                            todoCreatedArray_.append(createdArray[i].dateValue())
+                            self.todoCreatedArray.append(dateFormatter.string(from: todoCreatedArray_[i]))
+                        }
+                        var todoUpdatedArray_: [Date] = []
+                        for i in 0 ..< updatedArray.count{
+                            todoUpdatedArray_.append(updatedArray[i].dateValue())
+                            self.todoUpdatedArray.append(dateFormatter.string(from: todoUpdatedArray_[i]))
                         }
                         self.tableView.reloadData()
                     }
