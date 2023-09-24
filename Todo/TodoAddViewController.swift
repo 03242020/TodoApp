@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 class TodoAddViewController: UIViewController {
     
@@ -15,12 +17,21 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     
+    @IBOutlet weak var categoryJustButton: UIButton!
+    @IBOutlet weak var categoryRememberButton: UIButton!
+    @IBOutlet weak var categoryEitherButton: UIButton!
+    @IBOutlet weak var categoryToBuyButton: UIButton!
+    
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var date = ""
     var time = ""
+    var categoryJust: Bool?
+    var categoryRemember: Bool?
+    var categoryEither: Bool?
+    var categoryToBuy: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +66,11 @@ class TodoAddViewController: UIViewController {
                      "createdAt": createdTime,
                      "updatedAt": createdTime,
                      "scheduleDate": self.date,
-                     "scheduleTime": self.time
+                     "scheduleTime": self.time,
+                     "categoryJust": categoryJust ?? false,
+                     "categoryRemember": categoryRemember ?? false,
+                     "categoryEither": categoryEither ?? false,
+                     "categoryToBuy": categoryToBuy ?? false
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -76,6 +91,66 @@ class TodoAddViewController: UIViewController {
 
     @IBAction func closeButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func tapCategoryJustButton(_ sender: Any) {
+        print("categoryJustButton clicked")
+        if self.categoryJustButton.backgroundColor == UIColor.white {
+            categoryJustButton.backgroundColor = UIColor.blue
+            categoryJust = true
+            print("categoryJust: ", categoryJust)
+            return
+        }
+        if self.categoryJustButton.backgroundColor == UIColor.blue {
+            categoryJustButton.backgroundColor = UIColor.white
+            categoryJust = false
+            print("categoryJust: ", categoryJust)
+        }
+    }
+    
+    @IBAction func tapCategoryRememberButton(_ sender: Any) {
+        print("categoryRememberButton clicked")
+        if self.categoryRememberButton.backgroundColor == UIColor.white {
+            categoryRememberButton.backgroundColor = UIColor.blue
+            categoryRemember = true
+            print("categoryRemember: ", categoryRemember)
+            return
+        }
+        if self.categoryRememberButton.backgroundColor == UIColor.blue {
+            categoryRememberButton.backgroundColor = UIColor.white
+            categoryRemember = false
+            print("categoryRemember: ", categoryRemember)
+        }
+    }
+    
+    @IBAction func tapCategoryEitherButton(_ sender: Any) {
+        print("categoryEitherButton clicked")
+        if self.categoryEitherButton.backgroundColor == UIColor.white {
+            categoryEitherButton.backgroundColor = UIColor.blue
+            categoryEither = true
+            print("categoryEither: ", categoryEither)
+            return
+        }
+        if self.categoryEitherButton.backgroundColor == UIColor.blue {
+            categoryEitherButton.backgroundColor = UIColor.white
+            categoryEither = false
+            print("categoryEither: ", categoryEither)
+        }
+    }
+    
+    @IBAction func tapCategoryToBuyButton(_ sender: Any) {
+        print("categoryToBuyButton clicked")
+        if self.categoryToBuyButton.backgroundColor == UIColor.white {
+            categoryToBuyButton.backgroundColor = UIColor.blue
+            categoryToBuy = true
+            print("categoryToBuy: ", categoryToBuy)
+            return
+        }
+        if self.categoryToBuyButton.backgroundColor == UIColor.blue {
+            categoryToBuyButton.backgroundColor = UIColor.white
+            categoryToBuy = false
+            print("categoryToBuy: ", categoryToBuy)
+        }
     }
     
     /*

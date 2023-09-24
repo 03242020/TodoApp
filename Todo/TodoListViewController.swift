@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 //やること
 //年の追加(ピッカビューの月と日の左側)
@@ -32,6 +34,11 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     var todoUpdatedArray: [String] = []
     var todoScheduleDateArray: [String] = []
     var todoScheduleTimeArray: [String] = []
+    
+    var todoCategoryJustArray: [Bool] = []
+    var todoCategoryRememberArray: [Bool] = []
+    var todoCategoryEitherArray: [Bool] = []
+    var todoCategoryToBuyArray: [Bool] = []
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
     var isDone: Bool? = false
     
@@ -90,6 +97,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         next.todoUpdated = todoUpdatedArray[indexPath.row]
         next.todoScheduleDate = todoScheduleDateArray[indexPath.row]
         next.todoScheduleTime = todoScheduleTimeArray[indexPath.row]
+        next.todoCategoryJust = todoCategoryJustArray[indexPath.row]
+        next.todoCategoryRemember = todoCategoryRememberArray[indexPath.row]
+        next.todoCategoryEither = todoCategoryEitherArray[indexPath.row]
+        next.todoCategoryToBuy = todoCategoryToBuyArray[indexPath.row]
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -220,6 +231,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         var updatedArray:[Timestamp] = []
                         var scheduleDateArray:[String] = []
                         var scheduleTimeArray:[String] = []
+                        var categoryJustArray:[Bool] = []
+                        var categoryRememberArray:[Bool] = []
+                        var categoryEitherArray:[Bool] = []
+                        var categoryToBuyArray:[Bool] = []
                         for doc in querySnapshot.documents {
                             let data = doc.data()
                             idArray.append(doc.documentID)
@@ -238,6 +253,26 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             } else {
                                 scheduleTimeArray.append("hh:mm")
                             }
+                            if let temp = data["categoryJust"] as? Bool {
+                                categoryJustArray.append(temp)
+                            } else {
+                                categoryJustArray.append(false)
+                            }
+                            if let temp = data["categoryRemember"] as? Bool {
+                                categoryRememberArray.append(temp)
+                            } else {
+                                categoryRememberArray.append(false)
+                            }
+                            if let temp = data["categoryEither"] as? Bool {
+                                categoryEitherArray.append(temp)
+                            } else {
+                                categoryEitherArray.append(false)
+                            }
+                            if let temp = data["categoryToBuy"] as? Bool {
+                                categoryToBuyArray.append(temp)
+                            } else {
+                                categoryToBuyArray.append(false)
+                            }
                             // scheduleDateArray = []
                             // オプショナル型にして、String以外の場合は、固定値を入れる記述。
                             // 強制アンラップは極力やめる
@@ -253,6 +288,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                         self.todoIsDoneArray = isDoneArray
                         self.todoScheduleDateArray = scheduleDateArray
                         self.todoScheduleTimeArray = scheduleTimeArray
+                        self.todoCategoryJustArray = categoryJustArray
+                        self.todoCategoryRememberArray = categoryRememberArray
+                        self.todoCategoryEitherArray = categoryEitherArray
+                        self.todoCategoryToBuyArray = categoryToBuyArray
                         var todoCreatedArray_: [Date] = []
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

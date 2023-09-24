@@ -11,7 +11,8 @@
 
 import UIKit
 import Firebase
-
+import FirebaseAuth
+import FirebaseFirestore
 
 
 class TodoEditViewController: UIViewController {
@@ -23,8 +24,11 @@ class TodoEditViewController: UIViewController {
     @IBOutlet weak var updatedLabel: UILabel!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var doneButton: UIButton!
-    
     @IBOutlet weak var isDoneLabel: UILabel!
+    @IBOutlet weak var categoryJustButton: UIButton!
+    @IBOutlet weak var categoryRememberButton: UIButton!
+    @IBOutlet weak var categoryEitherButton: UIButton!
+    @IBOutlet weak var categoryToBuyButton: UIButton!
     
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
@@ -32,6 +36,11 @@ class TodoEditViewController: UIViewController {
     let timeFormatter = DateFormatter()
     var date = ""
     var time = ""
+    
+    var categoryJust: Bool?
+    var categoryRemember: Bool?
+    var categoryEither: Bool?
+    var categoryToBuy: Bool?
     
     //① 一覧画面から受け取るように変数を用意
     var todoId: String!
@@ -42,6 +51,10 @@ class TodoEditViewController: UIViewController {
     var todoIsDone: Bool!
     var todoScheduleDate: String!
     var todoScheduleTime: String!
+    var todoCategoryJust: Bool?
+    var todoCategoryRemember: Bool?
+    var todoCategoryEither: Bool?
+    var todoCategoryToBuy: Bool?
     
     // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
     var todoIdArray: [String] = []
@@ -61,6 +74,7 @@ class TodoEditViewController: UIViewController {
         createdLabel.text = "createdAt:  " + todoCreated
         updatedLabel.text = "updatedAt: " + todoUpdated
         detailTextView.text = todoDetail
+        paintCategoryButton()
         switch todoIsDone {
         case true:
             isDoneLabel.text = "完了"
@@ -94,7 +108,11 @@ class TodoEditViewController: UIViewController {
                     "detail": detail,
                     "updatedAt": FieldValue.serverTimestamp(),
                     "scheduleDate": date,
-                    "scheduleTime": time
+                    "scheduleTime": time,
+                    "categoryJust": categoryJust ?? false,
+                    "categoryRemember": categoryRemember ?? false,
+                    "categoryEither": categoryEither ?? false,
+                    "categoryToBuy": categoryToBuy ?? false
                 ]
                 , completion: { error in
                     if let error = error {
@@ -152,6 +170,68 @@ class TodoEditViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func tapCategoryJustButton(_ sender: Any) {
+        print("categoryJustButton clicked")
+        if self.categoryJustButton.backgroundColor == UIColor.white {
+            categoryJustButton.backgroundColor = UIColor.blue
+            categoryJust = true
+            print("categoryJust: ", categoryJust)
+            return
+        }
+        if self.categoryJustButton.backgroundColor == UIColor.blue {
+            categoryJustButton.backgroundColor = UIColor.white
+            categoryJust = false
+            print("categoryJust: ", categoryJust)
+        }
+    }
+    
+    @IBAction func tapCategoryRememberButton(_ sender: Any) {
+        print("categoryRememberButton clicked")
+        if self.categoryRememberButton.backgroundColor == UIColor.white {
+            categoryRememberButton.backgroundColor = UIColor.blue
+            categoryRemember = true
+            print("categoryRemember: ", categoryRemember)
+            return
+        }
+        if self.categoryRememberButton.backgroundColor == UIColor.blue {
+            categoryRememberButton.backgroundColor = UIColor.white
+            categoryRemember = false
+            print("categoryRemember: ", categoryRemember)
+        }
+    }
+    
+    @IBAction func tapCategoryEitherButton(_ sender: Any) {
+        print("categoryEitherButton clicked")
+        if self.categoryEitherButton.backgroundColor == UIColor.white {
+            categoryEitherButton.backgroundColor = UIColor.blue
+            categoryEither = true
+            print("categoryEither: ", categoryEither)
+            return
+        }
+        if self.categoryEitherButton.backgroundColor == UIColor.blue {
+            categoryEitherButton.backgroundColor = UIColor.white
+            categoryEither = false
+            print("categoryEither: ", categoryEither)
+        }
+    }
+    
+    @IBAction func tapCategoryToBuyButton(_ sender: Any) {
+        print("categoryToBuyButton clicked")
+        if self.categoryToBuyButton.backgroundColor == UIColor.white {
+            categoryToBuyButton.backgroundColor = UIColor.blue
+            categoryToBuy = true
+            print("categoryToBuy: ", categoryToBuy)
+            return
+        }
+        if self.categoryToBuyButton.backgroundColor == UIColor.blue {
+            categoryToBuyButton.backgroundColor = UIColor.white
+            categoryToBuy = false
+            print("categoryToBuy: ", categoryToBuy)
+        }
+    }
+    
+    
     /*
     // MARK: - Navigation
 
@@ -208,5 +288,23 @@ class TodoEditViewController: UIViewController {
         // インプットビュー設定(紐づいているUITextfieldへ代入)
         timeTextField.inputView = timePicker
         timeTextField.inputAccessoryView = toolbar
+    }
+    func paintCategoryButton() {
+        if todoCategoryJust == true {
+            categoryJustButton.backgroundColor = UIColor.blue
+            self.categoryJust = true
+        }
+        if todoCategoryRemember == true {
+            categoryRememberButton.backgroundColor = UIColor.blue
+            self.categoryRemember = true
+        }
+        if todoCategoryEither == true {
+            categoryEitherButton.backgroundColor = UIColor.blue
+            self.categoryEither = true
+        }
+        if todoCategoryToBuy == true {
+            categoryToBuyButton.backgroundColor = UIColor.blue
+            self.categoryToBuy = true
+        }
     }
 }
