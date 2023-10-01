@@ -22,16 +22,21 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
     
+    var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var date = ""
     var time = ""
-    var categoryJust: Bool?
-    var categoryRemember: Bool?
-    var categoryEither: Bool?
-    var categoryToBuy: Bool?
+    enum CategoryType: Int {
+        case normal     = 0
+        case just       = 1
+        case remember   = 2
+        case either     = 3
+        case toBuy      = 4
+    }
+    var todoViewType = CategoryType.normal
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,10 +72,7 @@ class TodoAddViewController: UIViewController {
                      "updatedAt": createdTime,
                      "scheduleDate": self.date,
                      "scheduleTime": self.time,
-                     "categoryJust": categoryJust ?? false,
-                     "categoryRemember": categoryRemember ?? false,
-                     "categoryEither": categoryEither ?? false,
-                     "categoryToBuy": categoryToBuy ?? false
+                     "viewType": todoViewType.rawValue
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -95,62 +97,26 @@ class TodoAddViewController: UIViewController {
     
     @IBAction func tapCategoryJustButton(_ sender: Any) {
         print("categoryJustButton clicked")
-        if self.categoryJustButton.backgroundColor == UIColor.white {
-            categoryJustButton.backgroundColor = UIColor.blue
-            categoryJust = true
-            print("categoryJust: ", categoryJust)
-            return
-        }
-        if self.categoryJustButton.backgroundColor == UIColor.blue {
-            categoryJustButton.backgroundColor = UIColor.white
-            categoryJust = false
-            print("categoryJust: ", categoryJust)
-        }
+            todoViewType = .just
+            paintButton()
     }
     
     @IBAction func tapCategoryRememberButton(_ sender: Any) {
         print("categoryRememberButton clicked")
-        if self.categoryRememberButton.backgroundColor == UIColor.white {
-            categoryRememberButton.backgroundColor = UIColor.blue
-            categoryRemember = true
-            print("categoryRemember: ", categoryRemember)
-            return
-        }
-        if self.categoryRememberButton.backgroundColor == UIColor.blue {
-            categoryRememberButton.backgroundColor = UIColor.white
-            categoryRemember = false
-            print("categoryRemember: ", categoryRemember)
-        }
+        todoViewType = .remember
+        paintButton()
     }
     
     @IBAction func tapCategoryEitherButton(_ sender: Any) {
         print("categoryEitherButton clicked")
-        if self.categoryEitherButton.backgroundColor == UIColor.white {
-            categoryEitherButton.backgroundColor = UIColor.blue
-            categoryEither = true
-            print("categoryEither: ", categoryEither)
-            return
-        }
-        if self.categoryEitherButton.backgroundColor == UIColor.blue {
-            categoryEitherButton.backgroundColor = UIColor.white
-            categoryEither = false
-            print("categoryEither: ", categoryEither)
-        }
+        todoViewType = .either
+        paintButton()
     }
     
     @IBAction func tapCategoryToBuyButton(_ sender: Any) {
         print("categoryToBuyButton clicked")
-        if self.categoryToBuyButton.backgroundColor == UIColor.white {
-            categoryToBuyButton.backgroundColor = UIColor.blue
-            categoryToBuy = true
-            print("categoryToBuy: ", categoryToBuy)
-            return
-        }
-        if self.categoryToBuyButton.backgroundColor == UIColor.blue {
-            categoryToBuyButton.backgroundColor = UIColor.white
-            categoryToBuy = false
-            print("categoryToBuy: ", categoryToBuy)
-        }
+        todoViewType = .toBuy
+        paintButton()
     }
     
     /*
@@ -171,6 +137,61 @@ class TodoAddViewController: UIViewController {
         timeTextField.endEditing(true)
         time = timeFormatter.string(from: timePicker.date)
         timeTextField.text = time
+    }
+    func paintButton() {
+        categoryJustButton.configuration?.background.backgroundColor = UIColor.white
+        categoryJustButton.tintColor = .none
+        categoryJustButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryRememberButton.configuration?.background.backgroundColor = UIColor.white
+        categoryRememberButton.tintColor = .none
+        categoryRememberButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryEitherButton.configuration?.background.backgroundColor = UIColor.white
+        categoryEitherButton.tintColor = .none
+        categoryEitherButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryToBuyButton.configuration?.background.backgroundColor = UIColor.white
+        categoryToBuyButton.tintColor = .none
+        categoryToBuyButton.configuration?.titleTextAttributesTransformer = .none
+        
+        if todoViewType == .just {
+            categoryJustButton.configuration?.background.backgroundColor = lightBlue
+            categoryJustButton.tintColor = UIColor.white
+            categoryJustButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if todoViewType == .remember {
+            categoryRememberButton.configuration?.background.backgroundColor = lightBlue
+            categoryRememberButton.tintColor = UIColor.white
+            categoryRememberButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if todoViewType == .either {
+            categoryEitherButton.configuration?.background.backgroundColor = lightBlue
+            categoryEitherButton.tintColor = UIColor.white
+            categoryEitherButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if todoViewType == .toBuy {
+            categoryToBuyButton.configuration?.background.backgroundColor = lightBlue
+            categoryToBuyButton.tintColor = UIColor.white
+            categoryToBuyButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        print(type(of: todoViewType))
     }
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")

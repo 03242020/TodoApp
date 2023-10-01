@@ -16,29 +16,38 @@ import FirebaseFirestore
 //updatedAtの下にカテゴリを4つほど追加する
 //Todoカテゴリ分けてTodoを保存
 //カテゴリでfirebase内でグループ化して、getする時にカテゴリも取得して、表示する。
-//とりあえずカテゴリ1つ置いてプッシュして認識合わせ
 //updatedAtが作成日日時になってしまっているので更新日にしっかり直す
 //更新日は下に改める。
 
+//UI調整ボタンの背景色を色変える
+//レイアウト横ずれあり。修正必須。時間とか。
 //日付と時間を項目を追加してそれらの選択が
+//カテゴリの選択を1つまでにする。以前選んでたものが非活性化とする。
+//カテゴリを列挙型を使って数字で判断する。
+//下は後ほど行う。上を優先して行う。
+//TodoModelを追加してId,Title,Detail...を設定して、Modelが配列となる。現状VとCはある。
+//上記実装により、コード量が減る。
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
     
-    // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
-    var todoIdArray: [String] = []
-    var todoTitleArray: [String] = []
-    var todoDetailArray: [String] = []
-    var todoIsDoneArray: [Bool] = []
-    var todoCreatedArray: [String] = []
-    var todoUpdatedArray: [String] = []
-    var todoScheduleDateArray: [String] = []
-    var todoScheduleTimeArray: [String] = []
     
-    var todoCategoryJustArray: [Bool] = []
-    var todoCategoryRememberArray: [Bool] = []
-    var todoCategoryEitherArray: [Bool] = []
-    var todoCategoryToBuyArray: [Bool] = []
+    @IBOutlet weak var categoryJustButton: UIButton!
+    @IBOutlet weak var categoryRememberButton: UIButton!
+    @IBOutlet weak var categoryEitherButton: UIButton!
+    @IBOutlet weak var categoryToBuyButton: UIButton!
+    
+    enum CategoryType: Int {
+        case normal     = 0
+        case just       = 1
+        case remember   = 2
+        case either     = 3
+        case toBuy      = 4
+    }
+    // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
+    var todoUpdatedArray: [String] = []
+    
+    var getTodoArray: [TodoInfo] = [TodoInfo]()
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
     var isDone: Bool? = false
     
@@ -76,12 +85,12 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                 /*Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion:{ (querySnapshot, error) in*/
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todoTitleArray.count
+        return getTodoArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = todoTitleArray[indexPath.row]
+        cell.textLabel?.text = getTodoArray[indexPath.row].todoTitle
         return cell
     }
     
@@ -89,18 +98,28 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.deselectRow(at: indexPath, animated: true)
         let storyboard: UIStoryboard = self.storyboard!
         let next = storyboard.instantiateViewController(withIdentifier: "TodoEditViewController") as! TodoEditViewController
-        next.todoId = todoIdArray[indexPath.row]
-        next.todoTitle = todoTitleArray[indexPath.row]
-        next.todoDetail = todoDetailArray[indexPath.row]
-        next.todoIsDone = todoIsDoneArray[indexPath.row]
-        next.todoCreated = todoCreatedArray[indexPath.row]
-        next.todoUpdated = todoUpdatedArray[indexPath.row]
-        next.todoScheduleDate = todoScheduleDateArray[indexPath.row]
-        next.todoScheduleTime = todoScheduleTimeArray[indexPath.row]
-        next.todoCategoryJust = todoCategoryJustArray[indexPath.row]
-        next.todoCategoryRemember = todoCategoryRememberArray[indexPath.row]
-        next.todoCategoryEither = todoCategoryEitherArray[indexPath.row]
-        next.todoCategoryToBuy = todoCategoryToBuyArray[indexPath.row]
+        next.todoId = getTodoArray[indexPath.row].todoId
+        next.todoTitle = getTodoArray[indexPath.row].todoTitle
+        next.todoDetail = getTodoArray[indexPath.row].todoDetail
+        next.todoIsDone = getTodoArray[indexPath.row].todoIsDone
+        next.todoCreated = getTodoArray[indexPath.row].todoCreated
+        next.todoUpdated = getTodoArray[indexPath.row].todoUpdated
+        next.todoScheduleDate = getTodoArray[indexPath.row].todoScheduleDate
+        next.todoScheduleTime = getTodoArray[indexPath.row].todoScheduleTime
+        switch getTodoArray[indexPath.row].todoViewType {
+        case 0:
+            next.todoViewType = .normal
+        case 1:
+            next.todoViewType = .just
+        case 2:
+            next.todoViewType = .remember
+        case 3:
+            next.todoViewType = .either
+        case 4:
+            next.todoViewType = .toBuy
+        default:
+            next.todoViewType = .normal
+        }
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -110,9 +129,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                                             title: "Edit",
                                             handler: {(action: UIContextualAction, view: UIView, completion: (Bool) -> Void) in
             if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").document(self.todoIdArray[indexPath.row]).updateData(
+                Firestore.firestore().collection("users/\(user.uid)/todos").document(self.getTodoArray[indexPath.row].todoId!).updateData(
                     [
-                        "isDone": !self.todoIsDoneArray[indexPath.row],
+                        "isDone": !self.getTodoArray[indexPath.row].todoIsDone!,
                         "updatedAt": FieldValue.serverTimestamp()
                     ]
                     , completion: { error in
@@ -139,7 +158,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         // 削除のスワイプ
         let deleteAction = UIContextualAction(style: .normal, title: "Delete", handler: { (action: UIContextualAction, view:UIView, completion: (Bool) -> Void) in
             if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").document(self.todoIdArray[indexPath.row]).delete(){ error in
+                Firestore.firestore().collection("users/\(user.uid)/todos").document(self.getTodoArray[indexPath.row].todoId!).delete(){ error in
                     if let error = error {
                         print("TODO削除失敗: " + error.localizedDescription)
                         let dialog = UIAlertController(title: "TODO削除失敗", message: error.localizedDescription, preferredStyle: .alert)
@@ -215,65 +234,40 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
+    @IBAction func tapCategoryJustButton(_ sender: Any) {
+    }
+    
+    
     // FirestoreからTodoを取得する処理
     func getTodoDataForFirestore() {
+        getTodoArray = [TodoInfo]()
         if let user = Auth.auth().currentUser {
             Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
                 if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 } else {
                     if let querySnapshot = querySnapshot {
-                        var idArray:[String] = []
-                        var titleArray:[String] = []
-                        var detailArray:[String] = []
-                        var isDoneArray:[Bool] = []
-                        var createdArray:[Timestamp] = []
-                        var updatedArray:[Timestamp] = []
-                        var scheduleDateArray:[String] = []
-                        var scheduleTimeArray:[String] = []
-                        var categoryJustArray:[Bool] = []
-                        var categoryRememberArray:[Bool] = []
-                        var categoryEitherArray:[Bool] = []
-                        var categoryToBuyArray:[Bool] = []
                         for doc in querySnapshot.documents {
                             let data = doc.data()
-                            idArray.append(doc.documentID)
-                            titleArray.append(data["title"] as! String)
-                            detailArray.append(data["detail"] as! String)
-                            isDoneArray.append(data["isDone"] as! Bool)
-                            createdArray.append(data["createdAt"] as! Timestamp)
-                            updatedArray.append(data["updatedAt"] as! Timestamp)
-                            if let temp = data["scheduleDate"] as? String {
-                                scheduleDateArray.append(temp)
-                            } else {
-                                scheduleDateArray.append("yyyy/mm/dd")
-                            }
-                            if let temp = data["scheduleTime"] as? String {
-                                scheduleTimeArray.append(temp)
-                            } else {
-                                scheduleTimeArray.append("hh:mm")
-                            }
-                            if let temp = data["categoryJust"] as? Bool {
-                                categoryJustArray.append(temp)
-                            } else {
-                                categoryJustArray.append(false)
-                            }
-                            if let temp = data["categoryRemember"] as? Bool {
-                                categoryRememberArray.append(temp)
-                            } else {
-                                categoryRememberArray.append(false)
-                            }
-                            if let temp = data["categoryEither"] as? Bool {
-                                categoryEitherArray.append(temp)
-                            } else {
-                                categoryEitherArray.append(false)
-                            }
-                            if let temp = data["categoryToBuy"] as? Bool {
-                                categoryToBuyArray.append(temp)
-                            } else {
-                                categoryToBuyArray.append(false)
-                            }
-                            // scheduleDateArray = []
+                            let todoId = doc.documentID
+                            let todoTitle = data["title"] as? String
+                            let todoDetail = data["detail"] as? String
+                            
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                            let todoCreatedTimestamp = data["createdAt"] as? Timestamp
+                            let todoCreatedDate = todoCreatedTimestamp?.dateValue()
+                            let todoCreatedString = dateFormatter.string(from: todoCreatedDate ?? Date())
+                            let todoUpdatedTimestamp = data["updatedAt"] as? Timestamp
+                            let todoUpdatedDate = todoUpdatedTimestamp?.dateValue()
+                            let todoUpdatedString = dateFormatter.string(from: todoUpdatedDate ?? Date())
+                            
+                            let todoScheduleDate = data["scheduleDate"] as? String ?? "yyyy/mm/dd"
+                            let todoScheduleTime = data["scheduleTime"] as? String ?? "hh:mm"
+                            let todoViewType = data["viewType"] as? Int ?? 0
+                            var newTodo = TodoInfo()
+                            newTodo = TodoInfo(todoId: todoId,todoTitle: todoTitle,todoDetail: todoDetail,todoCreated: todoCreatedString,todoUpdated: todoUpdatedString, todoScheduleDate: todoScheduleDate,todoScheduleTime: todoScheduleTime,todoViewType: todoViewType)
+                            self.getTodoArray.append(newTodo)
                             // オプショナル型にして、String以外の場合は、固定値を入れる記述。
                             // 強制アンラップは極力やめる
                             // 必須の要素はas!強制をする。あるかないか、scheduleDateArray等
@@ -281,28 +275,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             // クラッシュの原因は大きい割合で、強制アンラップがありうるので気を付ける。
                             // Swift入門53Pあたりのオプショナルを読み直す
                             //scheduleDateArray?.append(data["scheduleDate"] as? String ?? "yyyy/mm/dd hh:mm")
-                        }
-                        self.todoIdArray = idArray
-                        self.todoTitleArray = titleArray
-                        self.todoDetailArray = detailArray
-                        self.todoIsDoneArray = isDoneArray
-                        self.todoScheduleDateArray = scheduleDateArray
-                        self.todoScheduleTimeArray = scheduleTimeArray
-                        self.todoCategoryJustArray = categoryJustArray
-                        self.todoCategoryRememberArray = categoryRememberArray
-                        self.todoCategoryEitherArray = categoryEitherArray
-                        self.todoCategoryToBuyArray = categoryToBuyArray
-                        var todoCreatedArray_: [Date] = []
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                        for i in 0 ..< createdArray.count{
-                            todoCreatedArray_.append(createdArray[i].dateValue())
-                            self.todoCreatedArray.append(dateFormatter.string(from: todoCreatedArray_[i]))
-                        }
-                        var todoUpdatedArray_: [Date] = []
-                        for i in 0 ..< updatedArray.count{
-                            todoUpdatedArray_.append(updatedArray[i].dateValue())
-                            self.todoUpdatedArray.append(dateFormatter.string(from: todoUpdatedArray_[i]))
                         }
                         self.tableView.reloadData()
                     }

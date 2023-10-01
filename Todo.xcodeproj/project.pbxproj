@@ -25,6 +25,7 @@
 		BE5810C52A5FB0800022B2A6 /* TodoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5810C42A5FB0800022B2A6 /* TodoEditViewController.swift */; };
 		BE5810C72A5FB1160022B2A6 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5810C62A5FB1160022B2A6 /* SplashViewController.swift */; };
 		BE5810CB2A6671AD0022B2A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE5810CA2A6671AC0022B2A6 /* GoogleService-Info.plist */; };
+		BE94D6462AC9E0CC0072554A /* TodoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE94D6452AC9E0CC0072554A /* TodoInfo.swift */; };
 		BEA2CA5E2A9E7D62002D517D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA2CA5D2A9E7D62002D517D /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		BE5810C42A5FB0800022B2A6 /* TodoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditViewController.swift; sourceTree = "<group>"; };
 		BE5810C62A5FB1160022B2A6 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		BE5810CA2A6671AC0022B2A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE94D6452AC9E0CC0072554A /* TodoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoInfo.swift; sourceTree = "<group>"; };
 		BEA2CA5D2A9E7D62002D517D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,7 @@
 				BE5810C02A5FB05D0022B2A6 /* TodoListViewController.swift */,
 				BE5810C22A5FB06E0022B2A6 /* TodoAddViewController.swift */,
 				BE5810C42A5FB0800022B2A6 /* TodoEditViewController.swift */,
+				BE94D6452AC9E0CC0072554A /* TodoInfo.swift */,
 				BE5810B22A5FAF130022B2A6 /* Main.storyboard */,
 				BE5810C62A5FB1160022B2A6 /* SplashViewController.swift */,
 				BE5810B52A5FAF150022B2A6 /* Assets.xcassets */,
@@ -195,6 +198,7 @@
 				BEA2CA5E2A9E7D62002D517D /* LoginViewController.swift in Sources */,
 				BE5810C12A5FB05D0022B2A6 /* TodoListViewController.swift in Sources */,
 				BE5810C32A5FB06E0022B2A6 /* TodoAddViewController.swift in Sources */,
+				BE94D6462AC9E0CC0072554A /* TodoInfo.swift in Sources */,
 				BE5810AD2A5FAF130022B2A6 /* AppDelegate.swift in Sources */,
 				BE5810C52A5FB0800022B2A6 /* TodoEditViewController.swift in Sources */,
 				BE5810C72A5FB1160022B2A6 /* SplashViewController.swift in Sources */,
