@@ -252,7 +252,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             let todoId = doc.documentID
                             let todoTitle = data["title"] as? String
                             let todoDetail = data["detail"] as? String
-                            
+                            let todoIsDone = data["isDone"] as? Bool
                             let dateFormatter = DateFormatter()
                             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                             let todoCreatedTimestamp = data["createdAt"] as? Timestamp
@@ -266,7 +266,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             let todoScheduleTime = data["scheduleTime"] as? String ?? "hh:mm"
                             let todoViewType = data["viewType"] as? Int ?? 0
                             var newTodo = TodoInfo()
-                            newTodo = TodoInfo(todoId: todoId,todoTitle: todoTitle,todoDetail: todoDetail,todoCreated: todoCreatedString,todoUpdated: todoUpdatedString, todoScheduleDate: todoScheduleDate,todoScheduleTime: todoScheduleTime,todoViewType: todoViewType)
+                            newTodo = TodoInfo(todoId: todoId,todoTitle: todoTitle,todoDetail: todoDetail,todoIsDone: todoIsDone,todoCreated: todoCreatedString,todoUpdated: todoUpdatedString, todoScheduleDate: todoScheduleDate,todoScheduleTime: todoScheduleTime,todoViewType: todoViewType)
                             self.getTodoArray.append(newTodo)
                             // オプショナル型にして、String以外の場合は、固定値を入れる記述。
                             // 強制アンラップは極力やめる

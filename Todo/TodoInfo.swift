@@ -19,10 +19,6 @@ struct TodoInfo {
     var todoScheduleDate: String?
     var todoScheduleTime: String?
     var todoViewType: Int?
-    var todoCategoryJust: Bool?
-    var todoCategoryRemember: Bool?
-    var todoCategoryEither: Bool?
-    var todoCategoryToBuy: Bool?
 }
 
 
