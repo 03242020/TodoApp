@@ -180,12 +180,16 @@ class TodoEditViewController: UIViewController {
     print("categoryJustButton clicked")
         todoViewType = .just
         paintButton()
+        print("date: ", self.date)
+        print("time: ", self.time)
     }
     
     @IBAction func tapCategoryRememberButton(_ sender: Any) {
         print("categoryRememberButton clicked")
         todoViewType = .remember
         paintButton()
+        print("todoScheduleDate: ", self.todoScheduleDate)
+        print("todoScheduleTime: ", self.todoScheduleTime)
     }
     
     @IBAction func tapCategoryEitherButton(_ sender: Any) {
@@ -277,11 +281,9 @@ class TodoEditViewController: UIViewController {
     }
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
-        //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
         dateFormatter.dateFormat = "yyyy/MM/dd"
-        date = dateFormatter.string(from: Date())
-        dateTextField.text = date
-        //datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+        date = todoScheduleDate
+        dateTextField.text = todoScheduleDate
         datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels
@@ -298,7 +300,7 @@ class TodoEditViewController: UIViewController {
     func timePickerView() {
         timeFormatter.locale = Locale(identifier: "ja_JP")
         timeFormatter.dateFormat = "HH:mm"
-        time = timeFormatter.string(from: Date())
+        time = todoScheduleTime
         timeTextField.text = time
         timePicker.datePickerMode = UIDatePicker.Mode.time
         timePicker.timeZone = NSTimeZone.local

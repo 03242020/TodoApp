@@ -258,6 +258,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             let todoCreatedTimestamp = data["createdAt"] as? Timestamp
                             let todoCreatedDate = todoCreatedTimestamp?.dateValue()
                             let todoCreatedString = dateFormatter.string(from: todoCreatedDate ?? Date())
+                            print("Date: ",Date())
                             let todoUpdatedTimestamp = data["updatedAt"] as? Timestamp
                             let todoUpdatedDate = todoUpdatedTimestamp?.dateValue()
                             let todoUpdatedString = dateFormatter.string(from: todoUpdatedDate ?? Date())
