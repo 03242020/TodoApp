@@ -195,11 +195,9 @@ class TodoAddViewController: UIViewController {
     }
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
-        //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
         dateFormatter.dateFormat = "yyyy/MM/dd"
         date = dateFormatter.string(from: Date())
         dateTextField.text = date
-        //datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
         datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels

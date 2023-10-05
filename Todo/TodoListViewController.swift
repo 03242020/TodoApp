@@ -30,22 +30,10 @@ import FirebaseFirestore
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
-    
-    
     @IBOutlet weak var categoryJustButton: UIButton!
     @IBOutlet weak var categoryRememberButton: UIButton!
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
-    
-    enum CategoryType: Int {
-        case normal     = 0
-        case just       = 1
-        case remember   = 2
-        case either     = 3
-        case toBuy      = 4
-    }
-    // Firestoreから取得するTodoのid,title,detail,idDoneを入れる配列を用意
-    var todoUpdatedArray: [String] = []
     
     var getTodoArray: [TodoInfo] = [TodoInfo]()
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
@@ -61,7 +49,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     //     モーダルから戻ってきた時はviewWillAppear(:)が呼ばれる
     override func viewWillAppear(_ animated: Bool) {
-        todoUpdatedArray = []
         
         super.viewWillAppear(animated)
         // ①ログイン済みかどうか確認
@@ -98,28 +85,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.deselectRow(at: indexPath, animated: true)
         let storyboard: UIStoryboard = self.storyboard!
         let next = storyboard.instantiateViewController(withIdentifier: "TodoEditViewController") as! TodoEditViewController
-        next.todoId = getTodoArray[indexPath.row].todoId
-        next.todoTitle = getTodoArray[indexPath.row].todoTitle
-        next.todoDetail = getTodoArray[indexPath.row].todoDetail
-        next.todoIsDone = getTodoArray[indexPath.row].todoIsDone
-        next.todoCreated = getTodoArray[indexPath.row].todoCreated
-        next.todoUpdated = getTodoArray[indexPath.row].todoUpdated
-        next.todoScheduleDate = getTodoArray[indexPath.row].todoScheduleDate
-        next.todoScheduleTime = getTodoArray[indexPath.row].todoScheduleTime
-        switch getTodoArray[indexPath.row].todoViewType {
-        case 0:
-            next.todoViewType = .normal
-        case 1:
-            next.todoViewType = .just
-        case 2:
-            next.todoViewType = .remember
-        case 3:
-            next.todoViewType = .either
-        case 4:
-            next.todoViewType = .toBuy
-        default:
-            next.todoViewType = .normal
-        }
+        next.todoArray = getTodoArray[indexPath.row]
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -262,7 +228,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                             let todoUpdatedTimestamp = data["updatedAt"] as? Timestamp
                             let todoUpdatedDate = todoUpdatedTimestamp?.dateValue()
                             let todoUpdatedString = dateFormatter.string(from: todoUpdatedDate ?? Date())
-                            
                             let todoScheduleDate = data["scheduleDate"] as? String ?? "yyyy/mm/dd"
                             let todoScheduleTime = data["scheduleTime"] as? String ?? "hh:mm"
                             let todoViewType = data["viewType"] as? Int ?? 0
