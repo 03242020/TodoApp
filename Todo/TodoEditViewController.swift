@@ -30,6 +30,8 @@ class TodoEditViewController: UIViewController {
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
     
+    @IBOutlet weak var categoryButtons: UIButton!
+    
     enum CategoryType: Int {
         case normal     = 0
         case just       = 1
@@ -45,9 +47,11 @@ class TodoEditViewController: UIViewController {
     let timeFormatter = DateFormatter()
     var date = ""
     var time = ""
-    var todoArray = TodoInfo() {
+    //Arrayではないので名前を修正する。
+    //Todo猪股
+    var todoInfo = TodoInfo() {
         didSet {
-            switch todoArray.todoViewType {
+            switch todoInfo.todoViewType {
             case 0:
                 todoViewType = .normal
             case 1:
@@ -69,12 +73,12 @@ class TodoEditViewController: UIViewController {
         super.viewDidLoad()
         datePickerView()
         timePickerView()
-        titleTextField.text = todoArray.todoTitle
-        dateTextField.text = todoArray.todoScheduleDate
-        timeTextField.text = todoArray.todoScheduleTime
-        createdLabel.text = "createdAt:  " + (todoArray.todoCreated ?? "yyyy/MM/dd")
-        updatedLabel.text = "updatedAt: " + (todoArray.todoUpdated ?? "yyyy/MM/dd")
-        detailTextView.text = todoArray.todoDetail
+        titleTextField.text = todoInfo.todoTitle
+        dateTextField.text = todoInfo.todoScheduleDate
+        timeTextField.text = todoInfo.todoScheduleTime
+        createdLabel.text = "createdAt:  " + (todoInfo.todoCreated ?? "yyyy/MM/dd")
+        updatedLabel.text = "updatedAt: " + (todoInfo.todoUpdated ?? "yyyy/MM/dd")
+        detailTextView.text = todoInfo.todoDetail
         paintButton()
         setupLabel()
         // Do any additional setup after loading the view.
@@ -94,7 +98,7 @@ class TodoEditViewController: UIViewController {
         if let title = titleTextField.text,
            let detail = detailTextView.text {
             if let user = Auth.auth().currentUser {
-                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoArray.todoId!).updateData(
+                Firestore.firestore().collection("users/\(user.uid)/todos").document(todoInfo.todoId!).updateData(
                 [
                     "title": title,
                     "detail": detail,
@@ -125,9 +129,9 @@ class TodoEditViewController: UIViewController {
     // ③完了、未完了切り替えボタンの実装
     @IBAction func tapDoneButton(_ sender: Any) {
         if let user = Auth.auth().currentUser {
-            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoArray.todoId!).updateData(
+            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoInfo.todoId!).updateData(
                 [
-                    "isDone": !todoArray.todoIsDone!,
+                    "isDone": !todoInfo.todoIsDone!,
                     "updatedAt": FieldValue.serverTimestamp()
                 ]
                 , completion: {error in
@@ -146,7 +150,7 @@ class TodoEditViewController: UIViewController {
     
     @IBAction func tapDeleteButton(_ sender: Any) {
         if let user = Auth.auth().currentUser {
-            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoArray.todoId!).delete() { error in
+            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoInfo.todoId!).delete() { error in
                 if let error = error {
                     print("TODO削除失敗: " + error.localizedDescription)
                     let dialog = UIAlertController(title: "TODO削除失敗", message: error.localizedDescription, preferredStyle: .alert)
@@ -206,7 +210,7 @@ class TodoEditViewController: UIViewController {
         timeTextField.text = time
     }
     func setupLabel() {
-        switch todoArray.todoIsDone {
+        switch todoInfo.todoIsDone {
         case true:
             isDoneLabel.text = "完了"
             doneButton.setTitle("未完了にする", for: .normal)
@@ -218,6 +222,7 @@ class TodoEditViewController: UIViewController {
         }
     }
     func paintButton() {
+        //共通化できそう
         categoryJustButton.configuration?.background.backgroundColor = UIColor.white
         categoryJustButton.tintColor = .none
         categoryJustButton.configuration?.titleTextAttributesTransformer = .none
@@ -275,8 +280,8 @@ class TodoEditViewController: UIViewController {
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
         dateFormatter.dateFormat = "yyyy/MM/dd"
-        date = todoArray.todoScheduleDate ?? "yyyy/MM/dd"
-        dateTextField.text = todoArray.todoScheduleDate
+        date = todoInfo.todoScheduleDate ?? "yyyy/MM/dd"
+        dateTextField.text = todoInfo.todoScheduleDate
         datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.timeZone = NSTimeZone.local
         datePicker.preferredDatePickerStyle = .wheels
@@ -293,7 +298,7 @@ class TodoEditViewController: UIViewController {
     func timePickerView() {
         timeFormatter.locale = Locale(identifier: "ja_JP")
         timeFormatter.dateFormat = "HH:mm"
-        time = todoArray.todoScheduleTime ?? "HH:mm"
+        time = todoInfo.todoScheduleTime ?? "HH:mm"
         timeTextField.text = time
         timePicker.datePickerMode = UIDatePicker.Mode.time
         timePicker.timeZone = NSTimeZone.local

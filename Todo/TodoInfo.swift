@@ -18,6 +18,8 @@ struct TodoInfo {
     var todoUpdated: String?
     var todoScheduleDate: String?
     var todoScheduleTime: String?
+    // var todoViewType: CategoryType?
+    //Todo猪股
     var todoViewType: Int?
 }
 

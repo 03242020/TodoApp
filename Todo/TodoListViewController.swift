@@ -30,14 +30,24 @@ import FirebaseFirestore
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var categoryAllButton: UIButton!
     @IBOutlet weak var categoryJustButton: UIButton!
     @IBOutlet weak var categoryRememberButton: UIButton!
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
     
     var getTodoArray: [TodoInfo] = [TodoInfo]()
+    var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
     var isDone: Bool? = false
+    enum CategoryType: Int {
+        case normal     = 0
+        case just       = 1
+        case remember   = 2
+        case either     = 3
+        case toBuy      = 4
+    }
+    var viewType = CategoryType.normal.rawValue
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +95,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.deselectRow(at: indexPath, animated: true)
         let storyboard: UIStoryboard = self.storyboard!
         let next = storyboard.instantiateViewController(withIdentifier: "TodoEditViewController") as! TodoEditViewController
-        next.todoArray = getTodoArray[indexPath.row]
+        next.todoInfo = getTodoArray[indexPath.row]
         next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
@@ -190,9 +200,11 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         switch sender.selectedSegmentIndex {
         case 0:
             isDone = false
+            clearButton()
             getTodoDataForFirestore()
         case 1:
             isDone = true
+            clearButton()
             getTodoDataForFirestore()
             // ないとエラーになるので定義している
         default:
@@ -200,15 +212,158 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
+    
+    @IBAction func tapCategoryAllButton(_ sender: Any) {
+        viewType = 0
+        paintButton()
+        getTodoDataForFirestore()
+    }
+    
     @IBAction func tapCategoryJustButton(_ sender: Any) {
+        viewType = 1
+        paintButton()
+        getTodoCategoryDataForFirestore()
+    }
+    
+    @IBAction func tapCategoryRememberButton(_ sender: Any) {
+        viewType = 2
+        paintButton()
+        getTodoCategoryDataForFirestore()
+    }
+    
+    @IBAction func tapCategoryEitherButton(_ sender: Any) {
+        viewType = 3
+        paintButton()
+        getTodoCategoryDataForFirestore()
+    }
+    
+    @IBAction func tapCategoryToBuyButton(_ sender: Any) {
+        viewType = 4
+        paintButton()
+        getTodoCategoryDataForFirestore()
     }
     
     
+    func paintButton() {
+        //共通化できそう
+        clearButton()
+        if viewType == 0 {
+            categoryAllButton.configuration?.background.backgroundColor = lightBlue
+            categoryAllButton.tintColor = UIColor.white
+            categoryAllButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if viewType == 1 {
+            categoryJustButton.configuration?.background.backgroundColor = lightBlue
+            categoryJustButton.tintColor = UIColor.white
+            categoryJustButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if viewType == 2 {
+            categoryRememberButton.configuration?.background.backgroundColor = lightBlue
+            categoryRememberButton.tintColor = UIColor.white
+            categoryRememberButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if viewType == 3 {
+            categoryEitherButton.configuration?.background.backgroundColor = lightBlue
+            categoryEitherButton.tintColor = UIColor.white
+            categoryEitherButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        if viewType == 4 {
+            categoryToBuyButton.configuration?.background.backgroundColor = lightBlue
+            categoryToBuyButton.tintColor = UIColor.white
+            categoryToBuyButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                return outgoing
+            }
+        }
+        print(type(of: viewType))
+    }
+    func clearButton() {
+        categoryAllButton.configuration?.background.backgroundColor = UIColor.white
+        categoryAllButton.tintColor = .none
+        categoryAllButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryJustButton.configuration?.background.backgroundColor = UIColor.white
+        categoryJustButton.tintColor = .none
+        categoryJustButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryRememberButton.configuration?.background.backgroundColor = UIColor.white
+        categoryRememberButton.tintColor = .none
+        categoryRememberButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryEitherButton.configuration?.background.backgroundColor = UIColor.white
+        categoryEitherButton.tintColor = .none
+        categoryEitherButton.configuration?.titleTextAttributesTransformer = .none
+        
+        categoryToBuyButton.configuration?.background.backgroundColor = UIColor.white
+        categoryToBuyButton.tintColor = .none
+        categoryToBuyButton.configuration?.titleTextAttributesTransformer = .none
+    }
     // FirestoreからTodoを取得する処理
     func getTodoDataForFirestore() {
         getTodoArray = [TodoInfo]()
         if let user = Auth.auth().currentUser {
             Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
+                if let error = error {
+                    print("TODO取得失敗: " + error.localizedDescription)
+                } else {
+                    if let querySnapshot = querySnapshot {
+                        for doc in querySnapshot.documents {
+                            let data = doc.data()
+                            let todoId = doc.documentID
+                            let todoTitle = data["title"] as? String
+                            let todoDetail = data["detail"] as? String
+                            let todoIsDone = data["isDone"] as? Bool
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                            let todoCreatedTimestamp = data["createdAt"] as? Timestamp
+                            let todoCreatedDate = todoCreatedTimestamp?.dateValue()
+                            let todoCreatedString = dateFormatter.string(from: todoCreatedDate ?? Date())
+                            print("Date: ",Date())
+                            let todoUpdatedTimestamp = data["updatedAt"] as? Timestamp
+                            let todoUpdatedDate = todoUpdatedTimestamp?.dateValue()
+                            let todoUpdatedString = dateFormatter.string(from: todoUpdatedDate ?? Date())
+                            let todoScheduleDate = data["scheduleDate"] as? String ?? "yyyy/mm/dd"
+                            let todoScheduleTime = data["scheduleTime"] as? String ?? "hh:mm"
+                            let todoViewType = data["viewType"] as? Int ?? 0
+                            var newTodo = TodoInfo()
+                            newTodo = TodoInfo(todoId: todoId,todoTitle: todoTitle,todoDetail: todoDetail,todoIsDone: todoIsDone,todoCreated: todoCreatedString,todoUpdated: todoUpdatedString, todoScheduleDate: todoScheduleDate,todoScheduleTime: todoScheduleTime,todoViewType: todoViewType)
+                            self.getTodoArray.append(newTodo)
+                            // オプショナル型にして、String以外の場合は、固定値を入れる記述。
+                            // 強制アンラップは極力やめる
+                            // 必須の要素はas!強制をする。あるかないか、scheduleDateArray等
+                            // はオプショナル型の使用を推奨
+                            // クラッシュの原因は大きい割合で、強制アンラップがありうるので気を付ける。
+                            // Swift入門53Pあたりのオプショナルを読み直す
+                            //scheduleDateArray?.append(data["scheduleDate"] as? String ?? "yyyy/mm/dd hh:mm")
+                        }
+                        self.tableView.reloadData()
+                    }
+                }
+            })
+        }
+    }
+    // FirestoreからTodoを取得する処理
+    func getTodoCategoryDataForFirestore() {
+        getTodoArray = [TodoInfo]()
+        if let user = Auth.auth().currentUser {
+            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("viewType", isEqualTo: viewType).order(by: "createdAt").whereField("isDone", isEqualTo: isDone).getDocuments(completion: { (querySnapshot, error) in
                 if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 } else {
@@ -255,7 +410,11 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     @objc func handleRefreshControl() {
-        getTodoDataForFirestore()
+        if viewType == 0 {
+            getTodoDataForFirestore()
+        } else {
+            getTodoCategoryDataForFirestore()
+        }
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
