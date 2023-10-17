@@ -73,7 +73,11 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                     print("ユーザー名取得失敗: " + error.localizedDescription)
                 }
             })
-            getTodoDataForFirestore()
+            if self.viewType == 0 {
+                getTodoDataForFirestore()
+            } else {
+                getTodoCategoryDataForFirestore()
+            }
         }
     }
             /*Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in*/
@@ -170,9 +174,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     @IBAction func tapAddButton(_ sender: Any) {
         // ①Todo作成画面に画面遷移
         let storyboard: UIStoryboard = self.storyboard!
-        let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController")
+        let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController") as! TodoAddViewController
+        next.todoListViewType = self.viewType
         next.modalPresentationStyle = .fullScreen
-        self.present(next, animated:  true, completion: nil)
+        self.present(next, animated: true, completion: nil)
     }
     //
     @IBAction func tapLogoutButton(_ sender: Any) {

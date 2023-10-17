@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 class TodoAddViewController: UIViewController {
     
+    var test: Int = 0
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var dateTextField: UITextField!
@@ -22,6 +23,7 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
     
+
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
@@ -36,6 +38,7 @@ class TodoAddViewController: UIViewController {
         case either     = 3
         case toBuy      = 4
     }
+    var todoListViewType = CategoryType.normal.rawValue
     var todoViewType = CategoryType.normal
     
     override func viewDidLoad() {
@@ -84,6 +87,9 @@ class TodoAddViewController: UIViewController {
                         } else {
                             print("TODO作成成功")
                             // ④Todo一覧画面に戻る
+                            let storyboard: UIStoryboard = self.storyboard!
+                            let next = storyboard.instantiateViewController(withIdentifier: "TodoListViewController") as! TodoListViewController
+                            next.viewType = self.todoListViewType
                             self.dismiss(animated: true, completion: nil)
                         }
                 })
