@@ -74,6 +74,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
                 }
             })
             if self.viewType == 0 {
+                paintButton()
                 getTodoDataForFirestore()
             } else {
                 getTodoCategoryDataForFirestore()
@@ -205,12 +206,17 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         switch sender.selectedSegmentIndex {
         case 0:
             isDone = false
-            clearButton()
-            getTodoDataForFirestore()
+//            clearButton()
+            getTodoCategoryDataForFirestore()
         case 1:
             isDone = true
-            clearButton()
-            getTodoDataForFirestore()
+//            clearButton()
+            if viewType == 0 {
+                paintButton()
+                getTodoDataForFirestore()
+            } else {
+                getTodoCategoryDataForFirestore()
+            }
             // ないとエラーになるので定義している
         default:
             break

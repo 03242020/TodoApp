@@ -132,6 +132,7 @@ class TodoEditViewController: UIViewController {
             Firestore.firestore().collection("users/\(user.uid)/todos").document(todoInfo.todoId!).updateData(
                 [
                     "isDone": !todoInfo.todoIsDone!,
+                    "viewType": todoViewType.rawValue,
                     "updatedAt": FieldValue.serverTimestamp()
                 ]
                 , completion: {error in
