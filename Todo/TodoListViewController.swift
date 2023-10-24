@@ -27,6 +27,7 @@ import FirebaseFirestore
 //下は後ほど行う。上を優先して行う。
 //TodoModelを追加してId,Title,Detail...を設定して、Modelが配列となる。現状VとCはある。
 //上記実装により、コード量が減る。
+//
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -35,7 +36,8 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     @IBOutlet weak var categoryRememberButton: UIButton!
     @IBOutlet weak var categoryEitherButton: UIButton!
     @IBOutlet weak var categoryToBuyButton: UIButton!
-    
+    //selectの方がいいかも
+    var commonButton: UIButton!
     var getTodoArray: [TodoInfo] = [TodoInfo]()
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
@@ -48,12 +50,17 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         case toBuy      = 4
     }
     var viewType = CategoryType.normal.rawValue
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         configureRefreshControl()
+        categoryAllButton.sizeToFit()
+        categoryJustButton.sizeToFit()
+        categoryRememberButton.sizeToFit()
+        categoryEitherButton.sizeToFit()
+        categoryToBuyButton.sizeToFit()
         
         // Do any additional setup after loading the view.
     }
@@ -206,11 +213,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         switch sender.selectedSegmentIndex {
         case 0:
             isDone = false
-//            clearButton()
             getTodoCategoryDataForFirestore()
         case 1:
             isDone = true
-//            clearButton()
             if viewType == 0 {
                 paintButton()
                 getTodoDataForFirestore()
@@ -223,114 +228,95 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    
-    @IBAction func tapCategoryAllButton(_ sender: Any) {
-        viewType = 0
-        paintButton()
-        getTodoDataForFirestore()
+    @IBAction func tapCommonButton(_ sender: Any) {
+        let tag = (sender as AnyObject).tag
+                
+        guard let tag = tag else {
+            print("タグが設定されていません")
+            return
+        }
+        switch tag {
+        case 0:
+            viewType = 0
+            commonButton = categoryAllButton
+        case 1:
+            viewType = 1
+            commonButton = categoryJustButton
+        case 2:
+            viewType = 2
+            commonButton = categoryRememberButton
+        case 3:
+            viewType = 3
+            commonButton = categoryEitherButton
+        case 4:
+            viewType = 4
+            commonButton = categoryToBuyButton
+        default:
+            break
+        }
+        clearButton()
+        commonButton.configuration?.background.backgroundColor = lightBlue
+        commonButton.tintColor = UIColor.white
+        commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+            return outgoing
+        }
+        switch tag {
+        case 0:
+            getTodoDataForFirestore()
+        default:
+            getTodoCategoryDataForFirestore()
+        }
     }
-    
-    @IBAction func tapCategoryJustButton(_ sender: Any) {
-        viewType = 1
-        paintButton()
-        getTodoCategoryDataForFirestore()
-    }
-    
-    @IBAction func tapCategoryRememberButton(_ sender: Any) {
-        viewType = 2
-        paintButton()
-        getTodoCategoryDataForFirestore()
-    }
-    
-    @IBAction func tapCategoryEitherButton(_ sender: Any) {
-        viewType = 3
-        paintButton()
-        getTodoCategoryDataForFirestore()
-    }
-    
-    @IBAction func tapCategoryToBuyButton(_ sender: Any) {
-        viewType = 4
-        paintButton()
-        getTodoCategoryDataForFirestore()
-    }
-    
     
     func paintButton() {
         //共通化できそう
         clearButton()
-        if viewType == 0 {
-            categoryAllButton.configuration?.background.backgroundColor = lightBlue
-            categoryAllButton.tintColor = UIColor.white
-            categoryAllButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        switch viewType {
+        case 0:
+            commonButton = categoryAllButton
+        case 1:
+            commonButton = categoryJustButton
+        case 2:
+            commonButton = categoryRememberButton
+        case 3:
+            commonButton = categoryEitherButton
+        case 4:
+            commonButton = categoryToBuyButton
+        default:
+            break
+        }
+        commonButton.configuration?.background.backgroundColor = lightBlue
+        commonButton.tintColor = UIColor.white
+        commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
                 outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                 return outgoing
             }
-        }
-        if viewType == 1 {
-            categoryJustButton.configuration?.background.backgroundColor = lightBlue
-            categoryJustButton.tintColor = UIColor.white
-            categoryJustButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                return outgoing
-            }
-        }
-        if viewType == 2 {
-            categoryRememberButton.configuration?.background.backgroundColor = lightBlue
-            categoryRememberButton.tintColor = UIColor.white
-            categoryRememberButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                return outgoing
-            }
-        }
-        if viewType == 3 {
-            categoryEitherButton.configuration?.background.backgroundColor = lightBlue
-            categoryEitherButton.tintColor = UIColor.white
-            categoryEitherButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                return outgoing
-            }
-        }
-        if viewType == 4 {
-            categoryToBuyButton.configuration?.background.backgroundColor = lightBlue
-            categoryToBuyButton.tintColor = UIColor.white
-            categoryToBuyButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                return outgoing
-            }
-        }
         print(type(of: viewType))
     }
     func clearButton() {
-        categoryAllButton.configuration?.background.backgroundColor = UIColor.white
-        categoryAllButton.tintColor = .none
-        categoryAllButton.configuration?.titleTextAttributesTransformer = .none
-        
-        categoryJustButton.configuration?.background.backgroundColor = UIColor.white
-        categoryJustButton.tintColor = .none
-        categoryJustButton.configuration?.titleTextAttributesTransformer = .none
-        
-        categoryRememberButton.configuration?.background.backgroundColor = UIColor.white
-        categoryRememberButton.tintColor = .none
-        categoryRememberButton.configuration?.titleTextAttributesTransformer = .none
-        
-        categoryEitherButton.configuration?.background.backgroundColor = UIColor.white
-        categoryEitherButton.tintColor = .none
-        categoryEitherButton.configuration?.titleTextAttributesTransformer = .none
-        
-        categoryToBuyButton.configuration?.background.backgroundColor = UIColor.white
-        categoryToBuyButton.tintColor = .none
-        categoryToBuyButton.configuration?.titleTextAttributesTransformer = .none
+        let buttons: [UIButton] = [categoryAllButton, categoryJustButton, categoryRememberButton, categoryEitherButton, categoryToBuyButton]
+        //シーケンス必要だったので
+        let buttonsCount = AnySequence { () -> AnyIterator<Int> in
+            var count = 0
+            return AnyIterator {
+                defer { count += 1 }
+                return count < buttons.count ? count : nil
+            }
+        }
+        for i in buttonsCount {
+            buttons[i].configuration?.background.backgroundColor = UIColor.white
+            buttons[i].tintColor = .none
+            buttons[i].configuration?.titleTextAttributesTransformer = .none
+        }
     }
     // FirestoreからTodoを取得する処理
     func getTodoDataForFirestore() {
         getTodoArray = [TodoInfo]()
         if let user = Auth.auth().currentUser {
-            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
+            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone ?? false).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
                 if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 } else {
@@ -374,7 +360,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     func getTodoCategoryDataForFirestore() {
         getTodoArray = [TodoInfo]()
         if let user = Auth.auth().currentUser {
-            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("viewType", isEqualTo: viewType).order(by: "createdAt").whereField("isDone", isEqualTo: isDone).getDocuments(completion: { (querySnapshot, error) in
+            Firestore.firestore().collection("users/\(user.uid)/todos").whereField("viewType", isEqualTo: viewType).order(by: "createdAt").whereField("isDone", isEqualTo: isDone ?? false).getDocuments(completion: { (querySnapshot, error) in
                 if let error = error {
                     print("TODO取得失敗: " + error.localizedDescription)
                 } else {
@@ -420,6 +406,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
+    
     @objc func handleRefreshControl() {
         if viewType == 0 {
             getTodoDataForFirestore()
@@ -430,5 +417,16 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
         }
+    }
+}
+
+class setButton: UIButton {
+    private func adjustSize() {
+        sizeToFit()
+        let width = self.frame.width
+        let height = self.frame.height
+    // sizeToFit() を実行しても幅が狭いので、高さは変えずに
+    // 幅だけ +30 します。この数値は好みで変更してください。
+        frame.size = CGSize(width: width + 30, height: height)
     }
 }

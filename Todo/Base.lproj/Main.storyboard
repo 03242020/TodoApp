@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ykQ-pd-Dfq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ykQ-pd-Dfq">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -213,8 +213,8 @@
                                     <action selector="changeDoneControl:" destination="fE7-Ia-KTL" eventType="valueChanged" id="UGq-US-2mn"/>
                                 </connections>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO一覧" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzl-B9-aDs">
-                                <rect key="frame" x="141.66666666666666" y="79" width="110" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO一覧" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzl-B9-aDs">
+                                <rect key="frame" x="142" y="79" width="109.33333333333331" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="CzL-7X-BJm"/>
                                 </constraints>
@@ -264,131 +264,114 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9M-eu-RMq" userLabel="Category Button">
-                                <rect key="frame" x="5" y="674" width="72" height="28.333333333333371"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="72" id="Jew-FH-p8P"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="ALL" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="u7Z-2O-0Pq">
+                                <rect key="frame" x="5" y="674" width="383" height="28.333333333333371"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9M-eu-RMq" userLabel="Category Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="73.333333333333329" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryAllButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="t5N-0w-XHT"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ND6-Kl-GIv" userLabel="Category Button">
-                                <rect key="frame" x="81" y="674" width="74" height="28.333333333333371"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="Em7-02-ANG"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="ALL" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="v8x-LB-prt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ND6-Kl-GIv" userLabel="Category Button">
+                                        <rect key="frame" x="77.333333333333343" y="0.0" width="73.333333333333343" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryJustButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="zWo-ac-7iL"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KRZ-sI-qkH" userLabel="Category Button">
-                                <rect key="frame" x="159" y="674" width="74" height="28.333333333333371"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="pSW-mY-gQf"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="EuX-Lh-emY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KRZ-sI-qkH" userLabel="Category Button">
+                                        <rect key="frame" x="154.66666666666666" y="0.0" width="73.666666666666657" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryRememberButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="nC8-tM-bRe"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1P-vR-t8F" userLabel="Category Button">
-                                <rect key="frame" x="237" y="674" width="74" height="28.333333333333371"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="1Jw-UZ-K8o"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="KMo-L2-qWM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1P-vR-t8F" userLabel="Category Button">
+                                        <rect key="frame" x="232.33333333333334" y="0.0" width="73.333333333333343" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryEitherButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="Z7M-xx-Hpl"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hvF-i6-LxH" userLabel="Category Button">
-                                <rect key="frame" x="315" y="674" width="74" height="28.333333333333371"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="iyr-Y2-FRt"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="5RB-Fv-8pi"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hvF-i6-LxH" userLabel="Category Button">
+                                        <rect key="frame" x="309.66666666666669" y="0.0" width="73.333333333333314" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryToBuyButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="jcZ-MZ-QPK"/>
-                                </connections>
-                            </button>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="fE7-Ia-KTL" eventType="touchUpInside" id="9qA-EP-kLB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wV8-sp-bVz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="bottom" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="100" id="4Hu-vp-52n"/>
-                            <constraint firstItem="ND6-Kl-GIv" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="5qJ-EA-1M7"/>
                             <constraint firstItem="uWq-2f-aso" firstAttribute="top" secondItem="wV8-sp-bVz" secondAttribute="top" constant="10" id="87l-UA-lXF"/>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="bottom" secondItem="yW0-Y7-lw1" secondAttribute="bottom" constant="15" id="8Jn-xK-yKC"/>
+                            <constraint firstItem="wV8-sp-bVz" firstAttribute="trailing" secondItem="u7Z-2O-0Pq" secondAttribute="trailing" constant="5" id="9dM-Tt-Eyb"/>
                             <constraint firstItem="fx7-bT-6ym" firstAttribute="leading" secondItem="wV8-sp-bVz" secondAttribute="leading" constant="20" id="DoE-L4-OkJ"/>
                             <constraint firstItem="yW0-Y7-lw1" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="19" id="GId-VT-vKs"/>
                             <constraint firstItem="v50-ml-XAl" firstAttribute="leading" secondItem="wV8-sp-bVz" secondAttribute="leading" id="GMx-7s-prF"/>
                             <constraint firstItem="yW0-Y7-lw1" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="15" id="LzP-ve-YSX"/>
-                            <constraint firstItem="P9M-eu-RMq" firstAttribute="leading" secondItem="wV8-sp-bVz" secondAttribute="leading" constant="5" id="ORe-vM-RTS"/>
-                            <constraint firstItem="K1P-vR-t8F" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="OVD-hj-W5G"/>
                             <constraint firstItem="yW0-Y7-lw1" firstAttribute="centerX" secondItem="4AZ-tG-cbO" secondAttribute="centerX" id="Qhu-oy-Uws"/>
                             <constraint firstItem="uWq-2f-aso" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gzl-B9-aDs" secondAttribute="trailing" constant="8" symbolic="YES" id="S2k-Pn-j0a"/>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="trailing" secondItem="t0e-YL-CoI" secondAttribute="trailing" constant="20" id="Tg7-Ri-WMy"/>
                             <constraint firstAttribute="trailing" secondItem="v50-ml-XAl" secondAttribute="trailing" id="Tgu-LD-XJd"/>
                             <constraint firstItem="t0e-YL-CoI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gzl-B9-aDs" secondAttribute="trailing" constant="8" symbolic="YES" id="VwX-qJ-SJf"/>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="trailing" secondItem="Ouc-0s-EkW" secondAttribute="trailing" constant="15" id="WFJ-JW-p52"/>
-                            <constraint firstItem="hvF-i6-LxH" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="WhT-Ef-djA"/>
-                            <constraint firstItem="KRZ-sI-qkH" firstAttribute="leading" secondItem="ND6-Kl-GIv" secondAttribute="trailing" constant="4" id="Wot-Pk-CJb"/>
                             <constraint firstItem="v50-ml-XAl" firstAttribute="top" secondItem="wV8-sp-bVz" secondAttribute="top" constant="60" id="Xzt-Ip-anU"/>
                             <constraint firstItem="fx7-bT-6ym" firstAttribute="top" secondItem="wV8-sp-bVz" secondAttribute="top" constant="14" id="ZCX-Dv-EN2"/>
                             <constraint firstItem="t0e-YL-CoI" firstAttribute="top" secondItem="uWq-2f-aso" secondAttribute="bottom" constant="8" id="aV1-DW-7EF"/>
                             <constraint firstItem="gzl-B9-aDs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fx7-bT-6ym" secondAttribute="trailing" constant="8" symbolic="YES" id="b2Y-Mh-sHQ"/>
+                            <constraint firstItem="u7Z-2O-0Pq" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="d3N-vs-Trc"/>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="bottom" secondItem="Ouc-0s-EkW" secondAttribute="bottom" constant="90" id="edd-NO-u7B"/>
                             <constraint firstItem="yW0-Y7-lw1" firstAttribute="bottom" secondItem="wV8-sp-bVz" secondAttribute="bottom" id="hbT-4I-cCt"/>
-                            <constraint firstItem="hvF-i6-LxH" firstAttribute="leading" secondItem="K1P-vR-t8F" secondAttribute="trailing" constant="4" id="ivL-Gz-cWP"/>
-                            <constraint firstItem="P9M-eu-RMq" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="jLI-zA-sUb"/>
-                            <constraint firstItem="KRZ-sI-qkH" firstAttribute="top" secondItem="v50-ml-XAl" secondAttribute="bottom" constant="5" id="ktJ-BL-9YZ"/>
+                            <constraint firstItem="u7Z-2O-0Pq" firstAttribute="leading" secondItem="wV8-sp-bVz" secondAttribute="leading" constant="5" id="kPO-a9-caK"/>
                             <constraint firstItem="gzl-B9-aDs" firstAttribute="centerX" secondItem="4AZ-tG-cbO" secondAttribute="centerX" id="lTd-V0-E0w"/>
                             <constraint firstItem="gzl-B9-aDs" firstAttribute="top" secondItem="wV8-sp-bVz" secondAttribute="top" constant="20" id="nhm-Qb-z5Q"/>
-                            <constraint firstItem="ND6-Kl-GIv" firstAttribute="leading" secondItem="P9M-eu-RMq" secondAttribute="trailing" constant="4" id="o87-2C-CbC"/>
-                            <constraint firstItem="K1P-vR-t8F" firstAttribute="leading" secondItem="KRZ-sI-qkH" secondAttribute="trailing" constant="4" id="shc-VP-k3p"/>
                             <constraint firstItem="wV8-sp-bVz" firstAttribute="trailing" secondItem="uWq-2f-aso" secondAttribute="trailing" constant="20" id="xZj-cm-TSj"/>
                         </constraints>
                         <variation key="default">
@@ -412,7 +395,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kEP-jC-Zif" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2401" y="-693"/>
+            <point key="canvasLocation" x="2400.7633587786258" y="-693.66197183098598"/>
         </scene>
         <!--User-->
         <scene sceneID="sZo-TC-cMQ">
@@ -422,10 +405,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ユーザー検索" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l44-AU-igy">
-                                <rect key="frame" x="121.66666666666669" y="80" width="150" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ユーザー検索" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l44-AU-igy">
+                                <rect key="frame" x="126.66666666666669" y="80" width="140" height="28"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="LVH-qp-C90"/>
                                     <constraint firstAttribute="height" constant="28" id="r56-fR-8A4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
@@ -513,13 +495,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="タイトル" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYt-GO-kMM">
-                                <rect key="frame" x="50.999999999999993" y="117" width="89.333333333333314" height="27"/>
+                                <rect key="frame" x="50.999999999999993" y="116.66666666666667" width="89.333333333333314" height="26.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO編集" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QK-d3-lfS">
-                                <rect key="frame" x="141.66666666666666" y="79" width="110" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO編集" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QK-d3-lfS">
+                                <rect key="frame" x="142" y="79" width="109.33333333333331" height="27.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -561,10 +543,9 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="詳細" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dL-wT-DMz">
-                                <rect key="frame" x="51" y="392" width="45" height="27"/>
+                                <rect key="frame" x="51" y="392" width="44.666666666666657" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="YTc-zp-MmC"/>
-                                    <constraint firstAttribute="width" constant="45" id="cnU-8g-eAI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
@@ -617,7 +598,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ts-Ur-0rf">
-                                <rect key="frame" x="301" y="79" width="76" height="35"/>
+                                <rect key="frame" x="300.66666666666669" y="79" width="76.333333333333314" height="34.333333333333343"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="閉じる"/>
                                 <connections>
@@ -629,82 +610,74 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LA-zy-J43" userLabel="Category Button">
-                                <rect key="frame" x="47" y="312" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="FN4-QX-5Cn"/>
-                                    <constraint firstAttribute="height" constant="29" id="joi-Mj-dcV"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5qO-ek-zfa">
+                                <rect key="frame" x="47" y="312" width="330" height="28.333333333333314"/>
+                                <subviews>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LA-zy-J43" userLabel="Category Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryJustButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="S6S-6L-O3M"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stZ-JN-Cdb" userLabel="Category Button">
-                                <rect key="frame" x="281" y="311" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="29" id="8Sn-ld-1bh"/>
-                                    <constraint firstAttribute="width" constant="74" id="Wba-pD-AJb"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="Cew-k4-qff"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybn-zX-Zw3" userLabel="Category Button">
+                                        <rect key="frame" x="83.666666666666657" y="0.0" width="79.333333333333343" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryToBuyButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="1Ay-Za-gVT"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybn-zX-Zw3" userLabel="Category Button">
-                                <rect key="frame" x="125" y="312" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="8vj-qp-dfK"/>
-                                    <constraint firstAttribute="height" constant="29" id="daZ-8f-pBa"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="Yr5-a8-a6s"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ieo-eP-U0i" userLabel="Category Button">
+                                        <rect key="frame" x="167" y="0.0" width="79.666666666666686" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryRememberButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="nMH-vj-BaQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ieo-eP-U0i" userLabel="Category Button">
-                                <rect key="frame" x="203" y="311" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="0Tb-5B-yQh"/>
-                                    <constraint firstAttribute="height" constant="29" id="juV-xd-W0k"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="lhW-wd-Ctl"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stZ-JN-Cdb" userLabel="Category Button">
+                                        <rect key="frame" x="250.66666666666671" y="0.0" width="79.333333333333343" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryEitherButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="5Sg-vT-WvD"/>
-                                </connections>
-                            </button>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCommonButton:" destination="eoc-bT-PnV" eventType="touchUpInside" id="rnC-OG-7Ih"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="330" id="w5v-Ob-K9C"/>
+                                </constraints>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gY-Au-yOQ">
                                 <rect key="frame" x="234" y="665" width="108" height="30"/>
                                 <constraints>
@@ -730,17 +703,13 @@
                             <constraint firstItem="TKH-yq-D8O" firstAttribute="leading" secondItem="8tY-lO-cZT" secondAttribute="leading" constant="51" id="AaC-le-oe2"/>
                             <constraint firstItem="VYt-GO-kMM" firstAttribute="leading" secondItem="8tY-lO-cZT" secondAttribute="leading" constant="51" id="BOi-an-jP5"/>
                             <constraint firstItem="5ts-Ur-0rf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VYt-GO-kMM" secondAttribute="trailing" constant="8" symbolic="YES" id="BX5-TK-kAF"/>
+                            <constraint firstItem="5qO-ek-zfa" firstAttribute="top" secondItem="sPm-6I-4bA" secondAttribute="bottom" constant="20" id="Bkm-2w-dUI"/>
                             <constraint firstItem="TKH-yq-D8O" firstAttribute="centerX" secondItem="GcL-Ge-vlW" secondAttribute="centerX" id="CHQ-XB-sfD"/>
-                            <constraint firstItem="8tY-lO-cZT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="stZ-JN-Cdb" secondAttribute="trailing" symbolic="YES" id="DnQ-uV-iiI"/>
-                            <constraint firstItem="Ieo-eP-U0i" firstAttribute="top" secondItem="kLI-Dk-bSY" secondAttribute="bottom" constant="74" id="EUd-Uw-EU7"/>
                             <constraint firstItem="8tY-lO-cZT" firstAttribute="trailing" secondItem="6gY-Au-yOQ" secondAttribute="trailing" constant="51" id="FfC-qC-VW0"/>
                             <constraint firstItem="j7k-Wa-j73" firstAttribute="leading" secondItem="sPm-6I-4bA" secondAttribute="leading" id="GZi-Yu-Xis"/>
                             <constraint firstItem="VYt-GO-kMM" firstAttribute="top" secondItem="2QK-d3-lfS" secondAttribute="bottom" constant="10" id="Gin-xJ-Iqu"/>
                             <constraint firstItem="8tY-lO-cZT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Sok-3G-sX1" secondAttribute="trailing" symbolic="YES" id="IFc-pN-g4N"/>
-                            <constraint firstItem="5LA-zy-J43" firstAttribute="top" secondItem="sPm-6I-4bA" secondAttribute="bottom" constant="20" id="Ifg-nr-x9E"/>
-                            <constraint firstItem="stZ-JN-Cdb" firstAttribute="leading" secondItem="Ieo-eP-U0i" secondAttribute="trailing" constant="4" id="KR5-zu-sir"/>
                             <constraint firstItem="6gY-Au-yOQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r0x-kg-vka" secondAttribute="trailing" constant="8" symbolic="YES" id="Lw5-Ny-OHV"/>
-                            <constraint firstItem="stZ-JN-Cdb" firstAttribute="top" secondItem="PIv-Iq-PRI" secondAttribute="bottom" constant="113" id="M8q-ri-g9J"/>
                             <constraint firstItem="TKH-yq-D8O" firstAttribute="trailing" secondItem="PIv-Iq-PRI" secondAttribute="trailing" id="Mdr-Xo-NkX"/>
                             <constraint firstItem="sPm-6I-4bA" firstAttribute="top" secondItem="j7k-Wa-j73" secondAttribute="bottom" constant="1" id="NsU-Kw-3b3"/>
                             <constraint firstItem="TKH-yq-D8O" firstAttribute="leading" secondItem="3dL-wT-DMz" secondAttribute="leading" id="NuV-fT-eyO"/>
@@ -749,9 +718,8 @@
                             <constraint firstItem="vjA-qq-wNu" firstAttribute="leading" secondItem="Sok-3G-sX1" secondAttribute="leading" id="OtL-cW-Nch"/>
                             <constraint firstItem="8tY-lO-cZT" firstAttribute="bottom" secondItem="vjA-qq-wNu" secondAttribute="bottom" constant="31" id="Ozf-Ze-U5w"/>
                             <constraint firstItem="Sok-3G-sX1" firstAttribute="top" secondItem="TKH-yq-D8O" secondAttribute="bottom" constant="30" id="PoC-rm-DKr"/>
-                            <constraint firstItem="ybn-zX-Zw3" firstAttribute="top" secondItem="sPm-6I-4bA" secondAttribute="bottom" constant="20" id="Q2b-DX-dNP"/>
+                            <constraint firstItem="5qO-ek-zfa" firstAttribute="leading" secondItem="8tY-lO-cZT" secondAttribute="leading" constant="47" id="S37-cx-zcQ"/>
                             <constraint firstItem="5ts-Ur-0rf" firstAttribute="top" secondItem="8tY-lO-cZT" secondAttribute="top" constant="20" id="Sa0-jz-9Uj"/>
-                            <constraint firstItem="Ieo-eP-U0i" firstAttribute="leading" secondItem="ybn-zX-Zw3" secondAttribute="trailing" constant="4" id="ScB-wx-R54"/>
                             <constraint firstItem="Sok-3G-sX1" firstAttribute="leading" secondItem="8tY-lO-cZT" secondAttribute="leading" constant="51" id="Y2T-kd-KVF"/>
                             <constraint firstItem="vjA-qq-wNu" firstAttribute="baseline" secondItem="EFe-NF-M3R" secondAttribute="baseline" id="YPu-YB-98Z"/>
                             <constraint firstItem="TKH-yq-D8O" firstAttribute="top" secondItem="3dL-wT-DMz" secondAttribute="bottom" constant="8" symbolic="YES" id="a19-Fn-YET"/>
@@ -761,19 +729,17 @@
                             <constraint firstItem="j7k-Wa-j73" firstAttribute="top" secondItem="kLI-Dk-bSY" secondAttribute="bottom" constant="3" id="crG-kZ-Al8"/>
                             <constraint firstItem="EFe-NF-M3R" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vjA-qq-wNu" secondAttribute="trailing" constant="8" symbolic="YES" id="gff-e2-twd"/>
                             <constraint firstItem="8tY-lO-cZT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kLI-Dk-bSY" secondAttribute="trailing" symbolic="YES" id="hTE-ua-ffi"/>
-                            <constraint firstItem="5LA-zy-J43" firstAttribute="leading" secondItem="8tY-lO-cZT" secondAttribute="leading" constant="47" id="hdh-yH-eeP"/>
                             <constraint firstItem="kLI-Dk-bSY" firstAttribute="top" secondItem="PIv-Iq-PRI" secondAttribute="bottom" constant="5" id="iBJ-gK-Qcx"/>
                             <constraint firstItem="kLI-Dk-bSY" firstAttribute="leading" secondItem="I0e-3L-VLC" secondAttribute="trailing" id="k0o-Fh-Tcu"/>
                             <constraint firstItem="vjA-qq-wNu" firstAttribute="leading" secondItem="r0x-kg-vka" secondAttribute="leading" id="pGC-DZ-8me"/>
+                            <constraint firstItem="8tY-lO-cZT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3dL-wT-DMz" secondAttribute="trailing" symbolic="YES" id="qL5-fm-JuI"/>
                             <constraint firstItem="I0e-3L-VLC" firstAttribute="baseline" secondItem="kLI-Dk-bSY" secondAttribute="baseline" id="qhK-oA-LHn"/>
-                            <constraint firstItem="ybn-zX-Zw3" firstAttribute="leading" secondItem="5LA-zy-J43" secondAttribute="trailing" constant="4" id="qiz-W4-8BS"/>
                             <constraint firstItem="6gY-Au-yOQ" firstAttribute="top" secondItem="r0x-kg-vka" secondAttribute="top" id="r4J-hV-6Gc"/>
                             <constraint firstItem="5ts-Ur-0rf" firstAttribute="leading" secondItem="2QK-d3-lfS" secondAttribute="trailing" constant="49.333333333333343" id="wOb-xO-2T8"/>
                             <constraint firstItem="3dL-wT-DMz" firstAttribute="top" secondItem="sPm-6I-4bA" secondAttribute="bottom" constant="100" id="wg8-yV-Umr"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="categoryButtons" destination="stZ-JN-Cdb" id="Vin-x0-Qp3"/>
                         <outlet property="categoryEitherButton" destination="Ieo-eP-U0i" id="9wR-0F-mfI"/>
                         <outlet property="categoryJustButton" destination="5LA-zy-J43" id="9ov-bv-Wnl"/>
                         <outlet property="categoryRememberButton" destination="ybn-zX-Zw3" id="Nc4-OG-PG2"/>
@@ -801,7 +767,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="タイトル" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoR-16-XmT">
-                                <rect key="frame" x="50.999999999999993" y="117" width="92.333333333333314" height="27"/>
+                                <rect key="frame" x="50.999999999999993" y="117" width="91.333333333333314" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="rbe-ew-h6Q"/>
                                 </constraints>
@@ -809,8 +775,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kum-Hf-L3C">
-                                <rect key="frame" x="142" y="79" width="109.33333333333331" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kum-Hf-L3C">
+                                <rect key="frame" x="141.33333333333334" y="79" width="109.33333333333334" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="Yht-At-HoU"/>
                                 </constraints>
@@ -819,12 +785,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="資料作成" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2VM-K5-k54">
-                                <rect key="frame" x="45" y="164" width="301" height="34"/>
+                                <rect key="frame" x="45" y="164" width="300" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50W-d0-J1N">
-                                <rect key="frame" x="165.66666666666666" y="756" width="62" height="30"/>
+                                <rect key="frame" x="174" y="756" width="62" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JNS-JG-QjG"/>
                                 </constraints>
@@ -834,17 +800,17 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xG0-6k-j0W">
-                                <rect key="frame" x="51" y="421" width="292" height="163"/>
+                                <rect key="frame" x="51" y="420.66666666666669" width="308" height="163.00000000000006"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="163" id="tbM-a3-4dj"/>
+                                    <constraint firstAttribute="height" constant="163" id="5eo-Ss-4Hb"/>
                                 </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="timeTextField" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6La-g8-ds8">
-                                <rect key="frame" x="158" y="203" width="117" height="34.333333333333329"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="timeTextField" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6La-g8-ds8">
+                                <rect key="frame" x="158" y="203" width="113" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -854,7 +820,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zA-r1-gnU">
-                                <rect key="frame" x="300.66666666666669" y="79" width="76.333333333333314" height="35"/>
+                                <rect key="frame" x="300" y="79" width="76" height="34.333333333333343"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="閉じる"/>
                                 <connections>
@@ -863,87 +829,83 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="詳細" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfx-Zc-9ko">
-                                <rect key="frame" x="48" y="392" width="44.666666666666664" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="27" id="yH4-Rx-zfW"/>
-                                </constraints>
+                                <rect key="frame" x="48" y="391.33333333333331" width="44.666666666666657" height="26.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQg-ii-mPs" userLabel="Category Button">
-                                <rect key="frame" x="47" y="312" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="DaG-k0-yl4"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Dow-Dl-1jx">
+                                <rect key="frame" x="45" y="311" width="320" height="28.333333333333314"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQg-ii-mPs" userLabel="Category Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="77" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryJustButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="1rs-lC-GfI"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAf-UI-Hlg" userLabel="Category Button">
-                                <rect key="frame" x="203" y="311.66666666666669" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="Hkr-PL-Kdv"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="すぐやる" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCategoryJustButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="1rs-lC-GfI"/>
+                                            <action selector="tapCommonButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="VTY-at-c94"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELH-vf-CsW" userLabel="Category Button">
+                                        <rect key="frame" x="81" y="0.0" width="77" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryEitherButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="Gyw-qj-pbI"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AnE-XV-FjD" userLabel="Category Button">
-                                <rect key="frame" x="281" y="311.66666666666669" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="JvR-X6-iuC"/>
-                                    <constraint firstAttribute="height" constant="29" id="inB-3p-Je5"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCategoryRememberButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="OhL-nH-InB"/>
+                                            <action selector="tapCommonButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="hsn-a9-wVh"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAf-UI-Hlg" userLabel="Category Button">
+                                        <rect key="frame" x="162" y="0.0" width="77" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryToBuyButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="aYR-qL-wTS"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELH-vf-CsW" userLabel="Category Button">
-                                <rect key="frame" x="125" y="312" width="74" height="29"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="74" id="gOY-qm-1qp"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="覚えとく" cornerStyle="capsule">
-                                    <backgroundConfiguration key="background">
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="やるやら" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCategoryEitherButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="Gyw-qj-pbI"/>
+                                            <action selector="tapCommonButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="4X5-if-Anb"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AnE-XV-FjD" userLabel="Category Button">
+                                        <rect key="frame" x="243" y="0.0" width="77" height="28.333333333333332"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </backgroundConfiguration>
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="tapCategoryRememberButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="OhL-nH-InB"/>
-                                </connections>
-                            </button>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="買うもの" cornerStyle="capsule">
+                                            <backgroundConfiguration key="background">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="strokeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </backgroundConfiguration>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapCategoryToBuyButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="aYR-qL-wTS"/>
+                                            <action selector="tapCommonButton:" destination="l2X-Ix-xn3" eventType="touchUpInside" id="xEF-r3-QeW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="dlI-RD-U1Q"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zvF-W1-Ku1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -952,36 +914,30 @@
                             <constraint firstItem="6La-g8-ds8" firstAttribute="leading" secondItem="cbc-Lb-kfW" secondAttribute="trailing" id="1tE-B7-DwF"/>
                             <constraint firstItem="xG0-6k-j0W" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="51" id="4Ov-Eb-oAg"/>
                             <constraint firstItem="Kum-Hf-L3C" firstAttribute="top" secondItem="zvF-W1-Ku1" secondAttribute="top" constant="20" id="5NG-qs-OUg"/>
-                            <constraint firstItem="Qfx-Zc-9ko" firstAttribute="top" secondItem="dQg-ii-mPs" secondAttribute="bottom" constant="51" id="7gX-8q-MHh"/>
                             <constraint firstItem="cbc-Lb-kfW" firstAttribute="top" secondItem="2VM-K5-k54" secondAttribute="bottom" constant="5" id="8TV-vC-CcP"/>
+                            <constraint firstItem="Dow-Dl-1jx" firstAttribute="top" secondItem="6La-g8-ds8" secondAttribute="bottom" constant="74" id="8gx-pN-sFH"/>
+                            <constraint firstItem="xG0-6k-j0W" firstAttribute="centerX" secondItem="50W-d0-J1N" secondAttribute="centerX" id="9zy-1q-AY3"/>
                             <constraint firstItem="zoR-16-XmT" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="51" id="CEy-ho-CK8"/>
                             <constraint firstItem="zvF-W1-Ku1" firstAttribute="bottom" secondItem="50W-d0-J1N" secondAttribute="bottom" constant="32" id="Cnh-eX-zSL"/>
-                            <constraint firstItem="zAf-UI-Hlg" firstAttribute="leading" secondItem="ELH-vf-CsW" secondAttribute="trailing" constant="4" id="D2n-NG-WgW"/>
                             <constraint firstItem="2VM-K5-k54" firstAttribute="top" secondItem="zoR-16-XmT" secondAttribute="bottom" constant="20" id="D71-Ki-yJx"/>
                             <constraint firstItem="6La-g8-ds8" firstAttribute="top" secondItem="2VM-K5-k54" secondAttribute="bottom" constant="5" id="G5a-4e-Cyz"/>
-                            <constraint firstItem="xG0-6k-j0W" firstAttribute="top" secondItem="Qfx-Zc-9ko" secondAttribute="bottom" constant="2" id="IKX-Mm-Y8F"/>
-                            <constraint firstItem="ELH-vf-CsW" firstAttribute="leading" secondItem="dQg-ii-mPs" secondAttribute="trailing" constant="4" id="LGN-kQ-6uT"/>
                             <constraint firstItem="zvF-W1-Ku1" firstAttribute="trailing" secondItem="zoR-16-XmT" secondAttribute="trailing" constant="249.66666666666669" id="NZT-jo-jvr"/>
-                            <constraint firstItem="dQg-ii-mPs" firstAttribute="top" secondItem="cbc-Lb-kfW" secondAttribute="bottom" constant="75" id="OKC-Gf-o8w"/>
-                            <constraint firstItem="zvF-W1-Ku1" firstAttribute="trailing" secondItem="xG0-6k-j0W" secondAttribute="trailing" constant="50" id="OVh-yb-Kc3"/>
+                            <constraint firstItem="xG0-6k-j0W" firstAttribute="centerX" secondItem="Dow-Dl-1jx" secondAttribute="centerX" id="Nn3-pN-3yv"/>
                             <constraint firstItem="50W-d0-J1N" firstAttribute="centerX" secondItem="zeY-2i-T8m" secondAttribute="centerX" id="QIr-el-h9a"/>
-                            <constraint firstItem="AnE-XV-FjD" firstAttribute="top" secondItem="6La-g8-ds8" secondAttribute="bottom" constant="74.666666666666686" id="T3A-pW-Pun"/>
                             <constraint firstItem="2zA-r1-gnU" firstAttribute="top" secondItem="zvF-W1-Ku1" secondAttribute="top" constant="20" id="XCX-LD-Tjl"/>
+                            <constraint firstItem="xG0-6k-j0W" firstAttribute="top" secondItem="Qfx-Zc-9ko" secondAttribute="bottom" constant="3" id="XgQ-Ft-Bsd"/>
                             <constraint firstItem="2zA-r1-gnU" firstAttribute="leading" secondItem="Kum-Hf-L3C" secondAttribute="trailing" constant="49.333333333333343" id="XtR-c5-R0R"/>
                             <constraint firstItem="zoR-16-XmT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zvF-W1-Ku1" secondAttribute="leading" id="YFP-tn-LYr"/>
+                            <constraint firstItem="zvF-W1-Ku1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Qfx-Zc-9ko" secondAttribute="trailing" symbolic="YES" id="ZDr-sF-qfw"/>
                             <constraint firstItem="Qfx-Zc-9ko" firstAttribute="leading" secondItem="cbc-Lb-kfW" secondAttribute="leading" constant="3" id="a3b-ER-PP8"/>
-                            <constraint firstItem="ELH-vf-CsW" firstAttribute="leading" secondItem="dQg-ii-mPs" secondAttribute="trailing" constant="4" id="aM3-Tk-K2r"/>
                             <constraint firstItem="cbc-Lb-kfW" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="45" id="avp-ig-nm8"/>
-                            <constraint firstItem="zAf-UI-Hlg" firstAttribute="top" secondItem="6La-g8-ds8" secondAttribute="bottom" constant="74.666666666666686" id="con-wT-ZTI"/>
                             <constraint firstItem="2VM-K5-k54" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="45" id="cwJ-k9-2O4"/>
-                            <constraint firstItem="AnE-XV-FjD" firstAttribute="leading" secondItem="zAf-UI-Hlg" secondAttribute="trailing" constant="4" id="e4K-xa-cVb"/>
-                            <constraint firstItem="ELH-vf-CsW" firstAttribute="top" secondItem="cbc-Lb-kfW" secondAttribute="bottom" constant="75" id="eaS-3r-L6J"/>
-                            <constraint firstItem="dQg-ii-mPs" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="47" id="ekd-uq-tJj"/>
+                            <constraint firstItem="zvF-W1-Ku1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6La-g8-ds8" secondAttribute="trailing" symbolic="YES" id="dkF-9w-bAc"/>
                             <constraint firstItem="zoR-16-XmT" firstAttribute="top" secondItem="zvF-W1-Ku1" secondAttribute="top" constant="58" id="ged-oX-H4g"/>
                             <constraint firstItem="2zA-r1-gnU" firstAttribute="trailing" secondItem="zeY-2i-T8m" secondAttribute="trailingMargin" id="jUT-V7-sYW"/>
-                            <constraint firstItem="ELH-vf-CsW" firstAttribute="leading" secondItem="dQg-ii-mPs" secondAttribute="trailing" constant="4" id="oA9-vo-0Gi"/>
+                            <constraint firstItem="Dow-Dl-1jx" firstAttribute="leading" secondItem="zvF-W1-Ku1" secondAttribute="leading" constant="45" id="oBB-6c-NPv"/>
                             <constraint firstItem="Kum-Hf-L3C" firstAttribute="centerX" secondItem="zeY-2i-T8m" secondAttribute="centerX" id="uWV-1N-bxn"/>
-                            <constraint firstItem="AnE-XV-FjD" firstAttribute="leading" secondItem="zAf-UI-Hlg" secondAttribute="trailing" constant="4" id="ybJ-zM-iyx"/>
+                            <constraint firstItem="Qfx-Zc-9ko" firstAttribute="top" secondItem="Dow-Dl-1jx" secondAttribute="bottom" constant="52" id="xLi-x5-gIk"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1027,16 +983,16 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
