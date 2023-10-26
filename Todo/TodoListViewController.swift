@@ -31,13 +31,7 @@ import FirebaseFirestore
 class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var categoryAllButton: UIButton!
-    @IBOutlet weak var categoryJustButton: UIButton!
-    @IBOutlet weak var categoryRememberButton: UIButton!
-    @IBOutlet weak var categoryEitherButton: UIButton!
-    @IBOutlet weak var categoryToBuyButton: UIButton!
-    //selectの方がいいかも
-    var commonButton: UIButton!
+    @IBOutlet var buttons: [UIButton]!
     var getTodoArray: [TodoInfo] = [TodoInfo]()
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     // 画面下部の未完了、完了済みを判定するフラグ(falseは未完了)
@@ -56,12 +50,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         configureRefreshControl()
-        categoryAllButton.sizeToFit()
-        categoryJustButton.sizeToFit()
-        categoryRememberButton.sizeToFit()
-        categoryEitherButton.sizeToFit()
-        categoryToBuyButton.sizeToFit()
-        
         // Do any additional setup after loading the view.
     }
     //     モーダルから戻ってきた時はviewWillAppear(:)が呼ばれる
@@ -235,29 +223,12 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             print("タグが設定されていません")
             return
         }
-        switch tag {
-        case 0:
-            viewType = 0
-            commonButton = categoryAllButton
-        case 1:
-            viewType = 1
-            commonButton = categoryJustButton
-        case 2:
-            viewType = 2
-            commonButton = categoryRememberButton
-        case 3:
-            viewType = 3
-            commonButton = categoryEitherButton
-        case 4:
-            viewType = 4
-            commonButton = categoryToBuyButton
-        default:
-            break
-        }
+        viewType = tag
+        var button = buttons.filter { $0.tag == tag }.first!
         clearButton()
-        commonButton.configuration?.background.backgroundColor = lightBlue
-        commonButton.tintColor = UIColor.white
-        commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        button.configuration?.background.backgroundColor = lightBlue
+        button.tintColor = UIColor.white
+        button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
             return outgoing
@@ -273,23 +244,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     func paintButton() {
         //共通化できそう
         clearButton()
-        switch viewType {
-        case 0:
-            commonButton = categoryAllButton
-        case 1:
-            commonButton = categoryJustButton
-        case 2:
-            commonButton = categoryRememberButton
-        case 3:
-            commonButton = categoryEitherButton
-        case 4:
-            commonButton = categoryToBuyButton
-        default:
-            break
-        }
-        commonButton.configuration?.background.backgroundColor = lightBlue
-        commonButton.tintColor = UIColor.white
-        commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        var button = buttons.filter { $0.tag == viewType }.first!
+        button.configuration?.background.backgroundColor = lightBlue
+        button.tintColor = UIColor.white
+        button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
                 outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                 return outgoing
@@ -297,19 +255,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         print(type(of: viewType))
     }
     func clearButton() {
-        let buttons: [UIButton] = [categoryAllButton, categoryJustButton, categoryRememberButton, categoryEitherButton, categoryToBuyButton]
-        //シーケンス必要だったので
-        let buttonsCount = AnySequence { () -> AnyIterator<Int> in
-            var count = 0
-            return AnyIterator {
-                defer { count += 1 }
-                return count < buttons.count ? count : nil
-            }
-        }
-        for i in buttonsCount {
-            buttons[i].configuration?.background.backgroundColor = UIColor.white
-            buttons[i].tintColor = .none
-            buttons[i].configuration?.titleTextAttributesTransformer = .none
+        for button in buttons {
+            button.configuration?.background.backgroundColor = UIColor.white
+            button.tintColor = .none
+            button.configuration?.titleTextAttributesTransformer = .none
         }
     }
     // FirestoreからTodoを取得する処理
@@ -401,7 +350,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    func configureRefreshControl () {
+    func configureRefreshControl() {
         //RefreshControlを追加する処理
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
@@ -417,16 +366,5 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
         }
-    }
-}
-
-class setButton: UIButton {
-    private func adjustSize() {
-        sizeToFit()
-        let width = self.frame.width
-        let height = self.frame.height
-    // sizeToFit() を実行しても幅が狭いので、高さは変えずに
-    // 幅だけ +30 します。この数値は好みで変更してください。
-        frame.size = CGSize(width: width + 30, height: height)
     }
 }

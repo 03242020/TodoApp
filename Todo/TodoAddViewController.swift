@@ -12,17 +12,11 @@ import FirebaseFirestore
 
 class TodoAddViewController: UIViewController {
     
-    var test: Int = 0
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
-    @IBOutlet weak var categoryJustButton: UIButton!
-    @IBOutlet weak var categoryRememberButton: UIButton!
-    @IBOutlet weak var categoryEitherButton: UIButton!
-    @IBOutlet weak var categoryToBuyButton: UIButton!
-    //selectの方がいいかも
-    var commonButton: UIButton!
+    @IBOutlet var buttons: [UIButton]!
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
@@ -38,19 +32,20 @@ class TodoAddViewController: UIViewController {
         case toBuy      = 4
     }
     var todoListViewType = CategoryType.normal.rawValue
-    var todoViewType = CategoryType.normal
+    var todoViewType = CategoryType.normal.rawValue
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
         datePickerView()
         timePickerView()
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     override func viewDidLayoutSubviews() {
         detailTextView.layer.borderWidth = 1.0
         detailTextView.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
@@ -74,7 +69,7 @@ class TodoAddViewController: UIViewController {
                      "updatedAt": createdTime,
                      "scheduleDate": self.date,
                      "scheduleTime": self.time,
-                     "viewType": todoViewType.rawValue
+                     "viewType": todoViewType
                     ],merge: true
                     ,completion: { error in
                         if let error = error {
@@ -101,32 +96,23 @@ class TodoAddViewController: UIViewController {
     }
     
     @IBAction func tapCommonButton(_ sender: Any) {
-        
+        let tag = (sender as AnyObject).tag
+                
+        guard let tag = tag else {
+            print("タグが設定されていません")
+            return
+        }
+        todoViewType = tag
+        let button = buttons.filter { $0.tag == tag }.first!
+        clearButton()
+        button.configuration?.background.backgroundColor = lightBlue
+        button.tintColor = UIColor.white
+        button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+            return outgoing
+        }
     }
-    @IBAction func tapCategoryJustButton(_ sender: Any) {
-        print("categoryJustButton clicked")
-            todoViewType = .just
-            paintButton()
-    }
-    
-    @IBAction func tapCategoryRememberButton(_ sender: Any) {
-        print("categoryRememberButton clicked")
-        todoViewType = .remember
-        paintButton()
-    }
-    
-    @IBAction func tapCategoryEitherButton(_ sender: Any) {
-        print("categoryEitherButton clicked")
-        todoViewType = .either
-        paintButton()
-    }
-    
-    @IBAction func tapCategoryToBuyButton(_ sender: Any) {
-        print("categoryToBuyButton clicked")
-        todoViewType = .toBuy
-        paintButton()
-    }
-    
     /*
      // MARK: - Navigation
      
@@ -136,56 +122,41 @@ class TodoAddViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    
     @objc func dateDone() {
         dateTextField.endEditing(true)
         date = dateFormatter.string(from: datePicker.date)
         dateTextField.text = date
     }
+    
     @objc func timeDone() {
         timeTextField.endEditing(true)
         time = timeFormatter.string(from: timePicker.date)
         timeTextField.text = time
     }
-    func clearButton() {
-        let buttons: [UIButton] = [categoryJustButton, categoryRememberButton, categoryEitherButton, categoryToBuyButton]
-        //シーケンス必要だったので
-        let buttonsCount = AnySequence { () -> AnyIterator<Int> in
-            var count = 0
-            return AnyIterator {
-                defer { count += 1 }
-                return count < buttons.count ? count : nil
-            }
-        }
-        for i in buttonsCount {
-            buttons[i].configuration?.background.backgroundColor = UIColor.white
-            buttons[i].tintColor = .none
-            buttons[i].configuration?.titleTextAttributesTransformer = .none
-        }
-    }
+
     func paintButton() {
-        if todoViewType != .normal {
-            switch todoViewType {
-            case .just:
-                commonButton = categoryJustButton
-            case .remember:
-                commonButton = categoryRememberButton
-            case .either:
-                commonButton = categoryEitherButton
-            case .toBuy:
-                commonButton = categoryToBuyButton
-            default:
-                break
-            }
-            commonButton.configuration?.background.backgroundColor = lightBlue
-            commonButton.tintColor = UIColor.white
-            commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        //共通化できそう
+        clearButton()
+        let button = buttons.filter { $0.tag == todoViewType }.first!
+        button.configuration?.background.backgroundColor = lightBlue
+        button.tintColor = UIColor.white
+        button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
                 outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                 return outgoing
             }
+        print(type(of: todoViewType))
+    }
+    
+    func clearButton() {
+        for button in buttons {
+            button.configuration?.background.backgroundColor = UIColor.white
+            button.tintColor = .none
+            button.configuration?.titleTextAttributesTransformer = .none
         }
     }
-
+    
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
         dateFormatter.dateFormat = "yyyy/MM/dd"

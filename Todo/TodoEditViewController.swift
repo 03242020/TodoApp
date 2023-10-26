@@ -14,7 +14,6 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-
 class TodoEditViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
@@ -25,13 +24,7 @@ class TodoEditViewController: UIViewController {
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var isDoneLabel: UILabel!
-    @IBOutlet weak var categoryJustButton: UIButton!
-    @IBOutlet weak var categoryRememberButton: UIButton!
-    @IBOutlet weak var categoryEitherButton: UIButton!
-    @IBOutlet weak var categoryToBuyButton: UIButton!
-    //selectの方がいいかも
-    var commonButton: UIButton!
-    
+    @IBOutlet var buttons: [UIButton]!
     enum CategoryType: Int {
         case normal     = 0
         case just       = 1
@@ -39,8 +32,6 @@ class TodoEditViewController: UIViewController {
         case either     = 3
         case toBuy      = 4
     }
-    
-    var todoViewType = CategoryType.normal
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
     let dateFormatter = DateFormatter()
@@ -48,25 +39,7 @@ class TodoEditViewController: UIViewController {
     var date = ""
     var time = ""
     //Arrayではないので名前を修正する。
-    //Todo猪股
-    var todoInfo = TodoInfo() {
-        didSet {
-            switch todoInfo.todoViewType {
-            case 0:
-                todoViewType = .normal
-            case 1:
-                todoViewType = .just
-            case 2:
-                todoViewType = .remember
-            case 3:
-                todoViewType = .either
-            case 4:
-                todoViewType = .toBuy
-            default:
-                todoViewType = .normal
-            }
-        }
-    }
+    var todoInfo = TodoInfo()
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     
     override func viewDidLoad() {
@@ -91,8 +64,6 @@ class TodoEditViewController: UIViewController {
         detailTextView.layer.cornerRadius = 5.0
         detailTextView.layer.masksToBounds = true
     }
-
-    // ④編集ボタンの実装
     
     @IBAction func tapEditButton(_ sender: Any) {
         if let title = titleTextField.text,
@@ -105,7 +76,7 @@ class TodoEditViewController: UIViewController {
                     "updatedAt": FieldValue.serverTimestamp(),
                     "scheduleDate": date,
                     "scheduleTime": time,
-                    "viewType": todoViewType.rawValue,
+                    "viewType": todoInfo.todoViewType ?? 0,
                 ]
                 , completion: { error in
                     if let error = error {
@@ -132,7 +103,7 @@ class TodoEditViewController: UIViewController {
             Firestore.firestore().collection("users/\(user.uid)/todos").document(todoInfo.todoId!).updateData(
                 [
                     "isDone": !todoInfo.todoIsDone!,
-                    "viewType": todoViewType.rawValue,
+                    "viewType": todoInfo.todoViewType ?? 0,
                     "updatedAt": FieldValue.serverTimestamp()
                 ]
                 , completion: {error in
@@ -164,39 +135,26 @@ class TodoEditViewController: UIViewController {
             }
         }
     }
-    
 
     @IBAction func tapCommonButton(_ sender: Any) {
         let tag = (sender as AnyObject).tag
+                
         guard let tag = tag else {
             print("タグが設定されていません")
             return
         }
-        switch tag {
-        case 1:
-            todoViewType = .just
-            commonButton = categoryJustButton
-        case 2:
-            todoViewType = .remember
-            commonButton = categoryRememberButton
-        case 3:
-            todoViewType = .either
-            commonButton = categoryEitherButton
-        case 4:
-            todoViewType = .toBuy
-            commonButton = categoryToBuyButton
-        default:
-            break
-        }
+        todoInfo.todoViewType = tag
+        var button = buttons.filter { $0.tag == tag }.first!
         clearButton()
-        commonButton.configuration?.background.backgroundColor = lightBlue
-        commonButton.tintColor = UIColor.white
-        commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        button.configuration?.background.backgroundColor = lightBlue
+        button.tintColor = UIColor.white
+        button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
             return outgoing
         }
     }
+    
     /*
     // MARK: - Navigation
 
@@ -211,11 +169,13 @@ class TodoEditViewController: UIViewController {
         date = dateFormatter.string(from: datePicker.date)
         dateTextField.text = date
     }
+    
     @objc func timeDone() {
         timeTextField.endEditing(true)
         time = timeFormatter.string(from: timePicker.date)
         timeTextField.text = time
     }
+    
     func setupLabel() {
         switch todoInfo.todoIsDone {
         case true:
@@ -228,45 +188,30 @@ class TodoEditViewController: UIViewController {
             print("エラー")
         }
     }
+    
     func clearButton() {
-        let buttons: [UIButton] = [categoryJustButton, categoryRememberButton, categoryEitherButton, categoryToBuyButton]
-        //シーケンス必要だったので
-        let buttonsCount = AnySequence { () -> AnyIterator<Int> in
-            var count = 0
-            return AnyIterator {
-                defer { count += 1 }
-                return count < buttons.count ? count : nil
-            }
-        }
-        for i in buttonsCount {
-            buttons[i].configuration?.background.backgroundColor = UIColor.white
-            buttons[i].tintColor = .none
-            buttons[i].configuration?.titleTextAttributesTransformer = .none
+        for button in buttons {
+            button.configuration?.background.backgroundColor = UIColor.white
+            button.tintColor = .none
+            button.configuration?.titleTextAttributesTransformer = .none
         }
     }
+    
     func paintButton() {
-        if todoViewType != .normal {
-            switch todoViewType {
-            case .just:
-                commonButton = categoryJustButton
-            case .remember:
-                commonButton = categoryRememberButton
-            case .either:
-                commonButton = categoryEitherButton
-            case .toBuy:
-                commonButton = categoryToBuyButton
-            default:
-                break
-            }
-            commonButton.configuration?.background.backgroundColor = lightBlue
-            commonButton.tintColor = UIColor.white
-            commonButton.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        //共通化できそう
+        clearButton()
+        if todoInfo.todoViewType != 0 {
+            var button = buttons.filter { $0.tag == todoInfo.todoViewType }.first!
+            button.configuration?.background.backgroundColor = lightBlue
+            button.tintColor = UIColor.white
+            button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
                 outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                 return outgoing
             }
         }
     }
+    
     func datePickerView() {
         dateFormatter.locale = Locale(identifier: "ja_JP")
         dateFormatter.dateFormat = "yyyy/MM/dd"
@@ -285,6 +230,7 @@ class TodoEditViewController: UIViewController {
         dateTextField.inputView = datePicker
         dateTextField.inputAccessoryView = toolbar
     }
+    
     func timePickerView() {
         timeFormatter.locale = Locale(identifier: "ja_JP")
         timeFormatter.dateFormat = "HH:mm"
