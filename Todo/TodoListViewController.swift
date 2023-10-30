@@ -201,19 +201,13 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         switch sender.selectedSegmentIndex {
         case 0:
             isDone = false
-            getTodoCategoryDataForFirestore()
         case 1:
             isDone = true
-            if viewType == 0 {
-                paintButton()
-                getTodoDataForFirestore()
-            } else {
-                getTodoCategoryDataForFirestore()
-            }
             // ないとエラーになるので定義している
         default:
             break
         }
+        switchGetTodoDataFirestore()
     }
     
     @IBAction func tapCommonButton(_ sender: Any) {
@@ -224,7 +218,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
             return
         }
         viewType = tag
-        var button = buttons.filter { $0.tag == tag }.first!
+        let button = buttons.filter { $0.tag == tag }.first!
         clearButton()
         button.configuration?.background.backgroundColor = lightBlue
         button.tintColor = UIColor.white
@@ -244,7 +238,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     func paintButton() {
         //共通化できそう
         clearButton()
-        var button = buttons.filter { $0.tag == viewType }.first!
+        let button = buttons.filter { $0.tag == viewType }.first!
         button.configuration?.background.backgroundColor = lightBlue
         button.tintColor = UIColor.white
         button.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
@@ -350,6 +344,14 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
+    func switchGetTodoDataFirestore() {
+        if viewType == 0 {
+            getTodoDataForFirestore()
+        } else {
+            getTodoCategoryDataForFirestore()
+        }
+    }
+    
     func configureRefreshControl() {
         //RefreshControlを追加する処理
         tableView.refreshControl = UIRefreshControl()
@@ -357,11 +359,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     
     @objc func handleRefreshControl() {
-        if viewType == 0 {
-            getTodoDataForFirestore()
-        } else {
-            getTodoCategoryDataForFirestore()
-        }
+        switchGetTodoDataFirestore()
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)

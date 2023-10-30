@@ -17,6 +17,7 @@ class TodoAddViewController: UIViewController {
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet var buttons: [UIButton]!
+    @IBOutlet weak var addButton: UIButton!
     var lightBlue: UIColor { return UIColor.init(red: 186 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1.0) }
     var datePicker: UIDatePicker = UIDatePicker()
     var timePicker: UIDatePicker = UIDatePicker()
@@ -37,6 +38,7 @@ class TodoAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        addButton.isEnabled = false
         datePickerView()
         timePickerView()
     }
@@ -51,6 +53,14 @@ class TodoAddViewController: UIViewController {
         detailTextView.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
         detailTextView.layer.cornerRadius = 5.0
         detailTextView.layer.masksToBounds = true
+    }
+    
+    @IBAction func textEditingDidChanged(_ sender: Any) {
+        if titleTextField.text!.trimmingCharacters(in: .whitespaces).isEmpty {
+            addButton.isEnabled = false
+        } else {
+            addButton.isEnabled = true
+        }
     }
     //ピッカービュー表示時に、年の部分も
     @IBAction func tapAddButton(_ sender: Any) {
