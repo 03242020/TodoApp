@@ -516,6 +516,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textEditingDidChanged:" destination="eoc-bT-PnV" eventType="editingChanged" id="V3Z-9r-NZa"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="scheduleDate" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kLI-Dk-bSY">
                                 <rect key="frame" x="158" y="203" width="117" height="34"/>
@@ -748,6 +751,7 @@
                         <outlet property="dateTextField" destination="I0e-3L-VLC" id="5cC-oX-2pc"/>
                         <outlet property="detailTextView" destination="TKH-yq-D8O" id="HXA-0v-7cs"/>
                         <outlet property="doneButton" destination="6gY-Au-yOQ" id="vJQ-5u-E7g"/>
+                        <outlet property="editButton" destination="vjA-qq-wNu" id="cb5-QC-CXC"/>
                         <outlet property="isDoneLabel" destination="r0x-kg-vka" id="HjF-Zk-Eeb"/>
                         <outlet property="timeTextField" destination="kLI-Dk-bSY" id="Ny1-Ro-K5T"/>
                         <outlet property="titleTextField" destination="PIv-Iq-PRI" id="1vE-ZB-26j"/>
@@ -771,7 +775,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="タイトル" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoR-16-XmT">
-                                <rect key="frame" x="50.999999999999993" y="117" width="92.333333333333314" height="27"/>
+                                <rect key="frame" x="50.999999999999993" y="117" width="91.333333333333314" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="rbe-ew-h6Q"/>
                                 </constraints>
@@ -780,7 +784,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODO追加" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kum-Hf-L3C">
-                                <rect key="frame" x="142" y="79" width="109.33333333333331" height="28"/>
+                                <rect key="frame" x="141.33333333333334" y="79" width="109.33333333333334" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="Yht-At-HoU"/>
                                 </constraints>
@@ -789,7 +793,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="資料作成" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2VM-K5-k54">
-                                <rect key="frame" x="45" y="164" width="301" height="34"/>
+                                <rect key="frame" x="45" y="164" width="300" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -827,7 +831,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zA-r1-gnU">
-                                <rect key="frame" x="300.66666666666669" y="79" width="76.333333333333314" height="34.333333333333343"/>
+                                <rect key="frame" x="300" y="79" width="76" height="34.333333333333343"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="閉じる"/>
                                 <connections>
