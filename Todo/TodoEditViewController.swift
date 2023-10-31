@@ -25,6 +25,7 @@ class TodoEditViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var isDoneLabel: UILabel!
     @IBOutlet var buttons: [UIButton]!
+    @IBOutlet weak var editButton: UIButton!
     enum CategoryType: Int {
         case normal     = 0
         case just       = 1
@@ -152,6 +153,14 @@ class TodoEditViewController: UIViewController {
             var outgoing = incoming
             outgoing.font = UIFont.systemFont(ofSize: 13, weight: .bold)
             return outgoing
+        }
+    }
+    
+    @IBAction func textEditingDidChanged(_ sender: Any) {
+        if titleTextField.text!.trimmingCharacters(in: .whitespaces).isEmpty {
+            editButton.isEnabled = false
+        } else {
+            editButton.isEnabled = true
         }
     }
     
